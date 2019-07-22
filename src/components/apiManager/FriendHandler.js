@@ -3,27 +3,27 @@ import ApiHandler from "./ApiHandler"
 export default Object.create(ApiHandler, {
   get: {
      value: function (id) {
-        return  ApiHandler.get("events", id)
+        return  ApiHandler.get("friends", id)
       }
   },
 getAll: {
     value: function (){
-        return ApiHandler.all("events")
+        return ApiHandler.all("friends")
     }
 },
 delete: {
     value: function(id){
-        return ApiHandler.delete("events", id)
+        return ApiHandler.delete("friends", id)
     }
 },
 post: {
     value: function(newData){
-        return ApiHandler.post("events",newData)
+        return ApiHandler.post("friends",newData)
     }
 },
 put: {
     value: function(editData){
-    return ApiHandler.put("events",editData)
+    return ApiHandler.put("friends",editData)
     }
 }
 
