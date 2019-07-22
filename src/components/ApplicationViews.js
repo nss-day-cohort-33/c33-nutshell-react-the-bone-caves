@@ -1,6 +1,7 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Login from "./login/Login"
+import Register from './register/register'
 
 export default class ApplicationViews extends Component {
 
@@ -15,6 +16,11 @@ export default class ApplicationViews extends Component {
           }}
         />
 
+        <Route path="/register" render={props => {
+            return <Register />
+          }}
+        />
+        
         <Route
           path="/friends" render={props => {
             // Remove null and return the component which will show list of friends
@@ -42,6 +48,7 @@ export default class ApplicationViews extends Component {
             // Remove null and return the component which will show the user's tasks
           }}
         />
+
 
       </React.Fragment>
     );
