@@ -1,6 +1,6 @@
 import ApiHandler from "./ApiHandler"
 
-export default Object.create(apiManager, {
+export default Object.create(ApiHandler, {
   get: {
      value: function (id) {
         return  ApiHandler.get("messages", id)
