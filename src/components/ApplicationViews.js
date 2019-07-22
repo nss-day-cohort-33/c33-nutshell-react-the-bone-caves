@@ -1,5 +1,6 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
+import Login from "./login/Login"
 
 export default class ApplicationViews extends Component {
 
@@ -9,15 +10,15 @@ export default class ApplicationViews extends Component {
 
         <Route
           exact path="/" render={props => {
-            return null
+            return <Login />
             // Remove null and return the component which will show news articles
           }}
         />
 
         <Route
           path="/friends" render={props => {
-            return null
             // Remove null and return the component which will show list of friends
+            return null
           }}
         />
 
@@ -34,7 +35,7 @@ export default class ApplicationViews extends Component {
             // Remove null and return the component which will show the user's tasks
           }}
         />
-        
+
       </React.Fragment>
     );
   }
