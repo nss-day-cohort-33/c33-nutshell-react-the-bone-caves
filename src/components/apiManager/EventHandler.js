@@ -1,4 +1,4 @@
-import ApiManager from "./ApiHandler"
+import ApiHandler from "./ApiHandler"
 
 export default Object.create(ApiHandler, {
   get: {
