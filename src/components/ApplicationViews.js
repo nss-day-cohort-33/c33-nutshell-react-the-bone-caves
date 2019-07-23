@@ -2,6 +2,7 @@ import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Login from "./login/Login"
 import Register from './register/register'
+import Events from './events/Events'
 
 export default class ApplicationViews extends Component {
 
@@ -20,7 +21,7 @@ export default class ApplicationViews extends Component {
             return <Register />
           }}
         />
-        
+
         <Route
           path="/friends" render={props => {
             // Remove null and return the component which will show list of friends
@@ -37,7 +38,7 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/events" render={props => {
-            return null
+            return <Events />
             // Remove null and return the component which will show the user's tasks
           }}
         />
