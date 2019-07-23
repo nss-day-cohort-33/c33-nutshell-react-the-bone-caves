@@ -31,12 +31,19 @@ class ApplicationViews extends Component {
       .then(() => ArticleHandler.getAll())
       .then(articles => this.setState({ articles: articles }))
       .then(() => EventHandler.getAll())
-      .then(events => this.setState({ events: events }))
+      .then(events => {
+        let sortEvents = this.sortResource(events)
+        this.setState({ events: sortEvents })
+      })
       .then(() => TaskHandler.getAll())
       .then(tasks => this.setState({ tasks: tasks }))
       .then(() => MessageHandler.getAll())
       .then(messages => this.setState({ messages: messages }));
   }
+
+sortResource = arr => {
+return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
+}
 
   addArticle = article =>
   ArticleHandler.post(article)
@@ -84,8 +91,8 @@ class ApplicationViews extends Component {
   deleteArticle = id => ArticleHandler.delete(id)
   .then(() => ArticleHandler.getAll())
   .then(articles => {
-      this.setState({ 
-        articles: articles 
+      this.setState({
+        articles: articles
       })
       this.props.history.push("/articles")
   })
@@ -145,7 +152,7 @@ class ApplicationViews extends Component {
 
         <Route
           exact path="/events" render={props => {
-            return <Events events={this.state.events} {...props} deleteEvent={this.deleteEvent} updateEvennt={this.updateEvent} />
+            return <Events events={this.state.events} sortEvents={this.sortEvents} {...props} deleteEvent={this.deleteEvent} updateEvennt={this.updateEvent} />
             // Remove null and return the component which will show the user's tasks
           }}
         />
