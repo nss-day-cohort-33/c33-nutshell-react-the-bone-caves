@@ -7,7 +7,13 @@ import ArticleHandler from "./apiManager/ArticleHandler"
 import EventHandler from "./apiManager/EventHandler"
 import TaskHandler from "./apiManager/TaskHandler"
 import MessageHandler from "./apiManager/MessageHandler"
+<<<<<<< HEAD
 import Task from "./tasks/Task"
+=======
+import ArticleList from './articles/Articles'
+import ArticleForm from './articles/ArticleForm'
+import MessageList from "./messages/Messages"
+>>>>>>> master
 
 export default class ApplicationViews extends Component {
   state = {
@@ -32,6 +38,7 @@ export default class ApplicationViews extends Component {
       .then(messages => this.setState({ messages: messages }));
   }
 
+<<<<<<< HEAD
 
         // put functions
         updateTask = task => taskHandler.put(task)
@@ -42,14 +49,23 @@ export default class ApplicationViews extends Component {
                         })
                 })
 
+=======
+  addArticle = article =>
+  ArticleHandler.post(article)
+      .then(() => ArticleHandler.getAll())
+      .then(articles =>
+      this.setState({
+          articles: articles
+          })
+      );
+>>>>>>> master
 
   render() {
-    console.log(this.state)
     return (
       <React.Fragment>
 
         <Route
-          exact path="/" render={props => {
+          exact path="/login" render={props => {
             return <Login />
             // Remove null and return the component which will show news articles
           }}
@@ -60,6 +76,19 @@ export default class ApplicationViews extends Component {
           }}
         />
 
+        <Route exact path="/articles" render={props => {
+            return <ArticleList {...props} 
+            articles={this.state.articles}
+            />
+          }}
+        />
+
+          <Route path="/articles/new" render={(props) => {
+             return <ArticleForm {...props}
+              addArticle={this.addArticle} />
+            }} 
+          />
+
         <Route
           path="/friends" render={props => {
             // Remove null and return the component which will show list of friends
@@ -69,7 +98,7 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/messages" render={props => {
-            return null
+            return <MessageList messages={this.state.messages} {...props}/>
             // Remove null and return the component which will show the messages
           }}
         />
