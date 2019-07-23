@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 
 export default class ArticleList extends Component {
+    state = {
+        saveDisabled: false
+    }
     render () {
         return (
         <React.Fragment>
@@ -32,8 +35,14 @@ export default class ArticleList extends Component {
                                     Edit
                                 </button>
                                 <button
-                                    onClick={() => this.props.deleteArticle(article.id)}
-                                    className="card-link">Delete</button>
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={
+                                        () => {this.setState({ saveDisabled: true },
+                                        () => this.props.deleteArticle(article.id),
+                                        )
+                                    }
+                                }>Delete</button>
                                 </div>
                             </div>
                         </div>
