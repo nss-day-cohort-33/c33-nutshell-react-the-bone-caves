@@ -25,10 +25,10 @@ export default class TaskCard extends Component {
       };
       componentDidMount() {
         updateTask.get(this.props.match.params.id)
-        .then(task => {
+        .then(tasks => {
           this.setState({
             id: this.props.match.params.taskId,
-            iscompleted: task.state.iscompleted
+            iscompleted: tasks.state.iscompleted
           });
         });
       }
