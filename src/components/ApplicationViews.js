@@ -10,6 +10,7 @@ import MessageHandler from "./apiManager/MessageHandler"
 import Events from './events/Events'
 import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
+import ArticleEditForm from './articles/ArticleEditForm'
 import MessageList from "./messages/Messages"
 
 export default class ApplicationViews extends Component {
