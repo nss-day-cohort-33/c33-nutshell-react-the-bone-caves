@@ -29,7 +29,9 @@ class ApplicationViews extends Component {
       .getAll()
       .then(users => this.setState({ users: users }))
       .then(() => ArticleHandler.getAll())
-      .then(articles => this.setState({ articles: articles }))
+      .then(articles => {
+        let sortArticles = this.sortResource(articles)
+        this.setState({ articles: sortArticles })})
       .then(() => EventHandler.getAll())
       .then(events => {
         let sortEvents = this.sortResource(events)
@@ -42,7 +44,7 @@ class ApplicationViews extends Component {
   }
 
 sortResource = arr => {
-return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
+return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
 }
 
   addArticle = article =>
