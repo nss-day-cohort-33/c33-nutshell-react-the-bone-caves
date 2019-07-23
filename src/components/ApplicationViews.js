@@ -11,6 +11,7 @@ import Events from './events/Events'
 import EventForm from './events/EventForm'
 import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
+import ArticleEditForm from './articles/ArticleEditForm'
 import MessageList from "./messages/Messages"
 
 class ApplicationViews extends Component {
@@ -52,6 +53,15 @@ class ApplicationViews extends Component {
         this.setState({events: events})
         this.props.history.push('/events')
       })
+  updateArticle = article => {
+    return ArticleHandler.put(article)
+      .then(() => ArticleHandler.getAll())
+      .then(articles => {
+          this.setState({
+          articles: articles
+          })
+        });
+        };
 
   render() {
     return (
@@ -76,11 +86,20 @@ class ApplicationViews extends Component {
           }}
         />
 
-          <Route path="/articles/new" render={(props) => {
-             return <ArticleForm {...props}
-              addArticle={this.addArticle} />
-            }}
-          />
+        <Route path="/articles/new" render={(props) => {
+            return <ArticleForm {...props}
+            addArticle={this.addArticle}
+            />
+          }}
+        />
+
+        <Route path="/articles/:articlesId(\d+)/edit" render={props => {
+            return <ArticleEditForm {...props}
+            articles={this.state.articles}
+            updateArticle={this.updateArticle}
+            />
+          }}
+        />
 
         <Route
           path="/friends" render={props => {
