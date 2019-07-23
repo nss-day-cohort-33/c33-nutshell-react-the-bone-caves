@@ -2,10 +2,8 @@ import React, { Component } from "react";
 
 export default class TaskEditForm extends Component{
     state = {
-        userId: "",
-        task: "",
-        completedate: "",
-        iscompleted: false,
+        taskName: "",
+        completedate: ""
     };
     handleFieldChange = evt => {
         const stateToChange = {};
@@ -15,16 +13,15 @@ export default class TaskEditForm extends Component{
 
       updateTask= evt => {
         evt.preventDefault();
-          const task = {
-            task: this.state.task,
-            completedate: this.state.completedate,
-            userId: parseInt(this.state.userId),
-            iscompleted: false,
+          const taskEdit = {
+            id: this.props.match.params.id,
+            taskName: this.state.taskName,
+            completedate: this.state.completedate
           };
 
-          // Create the animal and redirect user to animal list
+
           this.props
-            .addTask(task)
+            .updateTask(taskEdit)
             .then(() => this.props.history.push("/tasks"));
       };
       render() {
@@ -32,15 +29,14 @@ export default class TaskEditForm extends Component{
           <React.Fragment>
             <form className="taskForm">
               <div className="form-group">
-                <label htmlFor="task">Task name</label>
+                <label htmlFor="taskName">Task name</label>
                 <input
                   type="text"
                   required
                   className="form-control"
                   onChange={this.handleFieldChange}
-                  id="task"
-                  placeholder="Task"
-                  value = {this.state.task}
+                  id="taskName"
+                  value = {this.props.taskName}
                 />
               </div>
               <div className="form-group">
@@ -51,13 +47,12 @@ export default class TaskEditForm extends Component{
                   className="form-control"
                   onChange={this.handleFieldChange}
                   id="completedate"
-                  placeholder="Date of task"
-                  value = {this.state.completedate}
+                  value = {this.props.completedate}
                 />
               </div>
               <button
                 type="submit"
-                onClick={this.constructNewTask}
+                onClick={this.updateTask}
                 className="btn btn-primary"
                 >
                 Submit

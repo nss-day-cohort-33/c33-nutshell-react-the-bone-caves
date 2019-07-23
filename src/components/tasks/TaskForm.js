@@ -1,11 +1,11 @@
 import React, { Component } from "react";
+import TaskHandler from "../apiManager/TaskHandler"
 
 export default class TaskForm extends Component{
     state = {
-        userId: "",
-        task: "",
+        taskName: "",
         completedate: "",
-        iscompleted: false,
+
     };
     handleFieldChange = evt => {
         const stateToChange = {};
@@ -16,29 +16,29 @@ export default class TaskForm extends Component{
       constructNewTask= evt => {
         evt.preventDefault();
           const task = {
-            task: this.state.task,
-            completedate: this.state.completedate,
-            userId: parseInt(this.state.userId)
-
+            taskName: this.state.taskName,
+            completedate: this.state.completedate
           };
 
           // Create the animal and redirect user to animal list
           this.props
             .addTask(task)
             .then(() => this.props.history.push("/tasks"));
-      };
+        }
+
+
       render() {
         return (
           <React.Fragment>
             <form className="taskForm">
               <div className="form-group">
-                <label htmlFor="task">Task name</label>
+                <label htmlFor="taskName">Task name</label>
                 <input
                   type="text"
                   required
                   className="form-control"
                   onChange={this.handleFieldChange}
-                  id="task"
+                  id="taskName"
                   placeholder="Task"
                 />
               </div>
@@ -65,4 +65,5 @@ export default class TaskForm extends Component{
 
         );
       }
+
     }

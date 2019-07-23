@@ -42,11 +42,13 @@ export default class TaskCard extends Component {
                 >
                 </input>
                     <h5 className="card-title">
-                       {this.props.task.task }
+                       {this.props.task.taskName }
                     </h5>
                     <p>Due Date: {this.props.task.completedate}</p>
                     <button onClick={() => this.props.deleteTask(this.props.task.id)}
                          className="card-link"> Delete</button>
+                          <button  onClick={() => this.props.history.push(`/tasks/${this.props.task.id}/edit`)}
+                         className="card-link">Edit</button>
                 </div>
             </div>
         )

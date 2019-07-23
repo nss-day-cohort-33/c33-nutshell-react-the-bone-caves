@@ -12,6 +12,7 @@ import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
 import MessageList from "./messages/Messages"
 import TaskForm from "./tasks/TaskForm"
+import TaskEditForm from "./tasks/TaskEditForm"
 
 export default class ApplicationViews extends Component {
   state = {
@@ -38,40 +39,41 @@ export default class ApplicationViews extends Component {
 
   deleteTask = id => {
     TaskHandler.delete(id)
-            .then(() => TaskHandler.getAll())
-            .then(tasks => {
+      .then(() => TaskHandler.getAll())
+      .then(tasks => {
 
-                    this.setState({tasks: tasks})
-            })
-}
+        this.setState({ tasks: tasks })
+      })
+  }
 
 
-        // put functions
-        updateTask = task => TaskHandler.put(task)
-                .then(() => TaskHandler.getAll())
-                .then(tasks=> {
-                        this.setState({
-                                task: tasks
-                        })
-                })
+  // put functions
+  updateTask = task => TaskHandler.put(task)
+    .then(() => TaskHandler.getAll())
+    .then(tasks => {
+      this.setState({
+        task: tasks
+      })
+    })
 
   addArticle = article =>
-  ArticleHandler.post(article)
+    ArticleHandler.post(article)
       .then(() => ArticleHandler.getAll())
       .then(articles =>
-      this.setState({
+        this.setState({
           articles: articles
-          })
+        })
       );
 
   addTask = task =>
-  TaskHandler.post(task)
+    TaskHandler.post(task)
       .then(() => TaskHandler.getAll())
       .then(tasks =>
-      this.setState({
+        this.setState({
           tasks: tasks
-          })
+        })
       );
+
 
   render() {
     return (
@@ -85,22 +87,22 @@ export default class ApplicationViews extends Component {
         />
 
         <Route path="/register" render={props => {
-            return <Register />
-          }}
+          return <Register />
+        }}
         />
 
         <Route exact path="/articles" render={props => {
-            return <ArticleList {...props}
+          return <ArticleList {...props}
             articles={this.state.articles}
-            />
-          }}
+          />
+        }}
         />
 
-          <Route path="/articles/new" render={(props) => {
-             return <ArticleForm {...props}
-              addArticle={this.addArticle} />
-            }}
-          />
+        <Route path="/articles/new" render={(props) => {
+          return <ArticleForm {...props}
+            addArticle={this.addArticle} />
+        }}
+        />
 
         <Route
           path="/friends" render={props => {
@@ -111,23 +113,27 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/messages" render={props => {
-            return <MessageList messages={this.state.messages} {...props}/>
+            return <MessageList messages={this.state.messages} {...props} />
             // Remove null and return the component which will show the messages
           }}
         />
 
         <Route exact
           path="/tasks/new" render={props => {
-            return <TaskForm {...props}  addTask={this.addTask}/>
+            return <TaskForm {...props} addTask={this.addTask} />
             // Remove null and return the component which will show the user's tasks
           }}
         />
-
+        <Route exact
+          path="/tasks/:id(\d+)/edit" render={props => {
+            return <TaskEditForm {...props} updateTask={this.updateTask} tasks={this.tasks} />
+          }}
+          />
         <Route exact
           path="/tasks" render={props => {
-            return <Task {...props} tasks={this.state.tasks} updateTask={this.updateTask} deleteTask={this.deleteTask}/>
-            // Remove null and return the component which will show the user's tasks
-          }}
+          return <Task {...props} tasks={this.state.tasks} updateTask={this.updateTask} deleteTask={this.deleteTask} />
+          // Remove null and return the component which will show the user's tasks
+        }}
         />
 
 
