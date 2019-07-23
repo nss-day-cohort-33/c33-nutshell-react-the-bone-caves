@@ -32,6 +32,17 @@ export default class ApplicationViews extends Component {
       .then(messages => this.setState({ messages: messages }));
   }
 
+
+        // put functions
+        updateTask = task => taskHandler.put(task)
+                .then(() => taskHandler.getAll())
+                .then(tasks=> {
+                        this.setState({
+                                task: tasks
+                        })
+                })
+
+
   render() {
     console.log(this.state)
     return (
@@ -65,7 +76,7 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/tasks" render={props => {
-            return <Task {...props} tasks={this.state.tasks}/>
+            return <Task {...props} tasks={this.state.tasks} updateTask={this.updateTask}/>
             // Remove null and return the component which will show the user's tasks
           }}
         />

@@ -2,19 +2,21 @@ import React, { Component } from "react"
 
 
 
+
 export default class TaskCard extends Component {
     state = {
         completedate:""
     }
     handleFieldChange = evt => {
-        const stateToChange = true
+        const stateToChange = {}
         stateToChange[evt.target.id] = evt.target.value;
         this.setState(stateToChange);
       }
       taskComplete =evt =>{
         evt.preventDefault();
         const task = {
-            completedate: this.state.completedate
+          id: this.props.match.params.taskId,
+          iscompleted: this.state.iscompleted
           }
 
           this.props
@@ -22,10 +24,11 @@ export default class TaskCard extends Component {
 
       };
       componentDidMount() {
-        taskHandler.get(this.props.match.params.id)
+        updateTask.get(this.props.match.params.id)
         .then(task => {
           this.setState({
-            completedate: task.state.completedate
+            id: this.props.match.params.taskId,
+            iscompleted: task.state.iscompleted
           });
         });
       }
