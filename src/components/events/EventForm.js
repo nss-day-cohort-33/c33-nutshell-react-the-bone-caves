@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import { DH_UNABLE_TO_CHECK_GENERATOR } from 'constants';
 
 export default class EventForm extends Component {
   state ={

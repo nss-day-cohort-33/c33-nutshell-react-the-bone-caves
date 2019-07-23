@@ -17,14 +17,14 @@ export default class ArticleEditForm extends Component {
 
     updateExistingArticle = evt => {
         evt.preventDefault()
-  
+
           const editedArticle = {
             id: this.props.match.params.articlesId,
             title: this.state.articleTitle,
             url: this.state.articleURL,
             synopsis: this.state.articleSynopsis
           }
-  
+
       this.props.updateArticle(editedArticle)
       .then(() => this.props.history.push("/articles"))
     }
