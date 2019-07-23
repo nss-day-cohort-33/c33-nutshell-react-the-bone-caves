@@ -9,6 +9,7 @@ import TaskHandler from "./apiManager/TaskHandler"
 import MessageHandler from "./apiManager/MessageHandler"
 import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
+import MessageList from "./messages/Messages"
 
 export default class ApplicationViews extends Component {
   state = {
@@ -80,7 +81,7 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/messages" render={props => {
-            return null
+            return <MessageList messages={this.state.messages} {...props}/>
             // Remove null and return the component which will show the messages
           }}
         />
