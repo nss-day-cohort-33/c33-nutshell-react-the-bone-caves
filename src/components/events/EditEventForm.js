@@ -101,7 +101,7 @@ export default class EventForm extends Component {
             onClick={this.constructNewEvent}
             className="btn btn-primary"
           >
-            Create Event
+            Update Event
           </button>
         </form>
       </React.Fragment>
