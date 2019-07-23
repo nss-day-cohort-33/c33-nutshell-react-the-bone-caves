@@ -20,7 +20,7 @@ export default class Events extends Component {
         <section className="events">
           {
             this.props.events.map(event => {
-              return <EventCard key={event.id} event={event} {...this.props} />
+              return <EventCard key={event.id} event={event} deleteEvent={this.props.deleteEvent} updateEvent={this.props.updateEvent} {...this.props} />
             })
           }
         </section>
