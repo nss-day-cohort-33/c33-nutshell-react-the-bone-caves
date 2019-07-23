@@ -7,7 +7,7 @@ export default class TaskCard extends Component {
         completedate:""
     }
     handleFieldChange = evt => {
-        const stateToChange = {};
+        const stateToChange = true
         stateToChange[evt.target.id] = evt.target.value;
         this.setState(stateToChange);
       }
@@ -19,15 +19,13 @@ export default class TaskCard extends Component {
 
           this.props
             .taskComplete(task)
-            .then(() => this.props.history.push("/tasks"));
-        }
-      }
-      componentDidMount() {
-        candyHandler.get(this.props.match.params.Id)
-        .then(candy => {
-          this.setState({
-            nameCandy: candy.nameCandy,
 
+      };
+      componentDidMount() {
+        taskHandler.get(this.props.match.params.id)
+        .then(task => {
+          this.setState({
+            completedate: task.state.completedate
           });
         });
       }
@@ -50,4 +48,5 @@ export default class TaskCard extends Component {
             </div>
         )
     }
-}
+
+  }
