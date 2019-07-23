@@ -43,6 +43,16 @@ export default class ApplicationViews extends Component {
           })
       );
 
+  updateArticle = article => {
+    return ArticleHandler.put(article)
+      .then(() => ArticleHandler.getAll())
+      .then(articles => {
+          this.setState({
+          articles: articles
+          })
+        });
+        };
+
   render() {
     return (
       <React.Fragment>
@@ -66,11 +76,20 @@ export default class ApplicationViews extends Component {
           }}
         />
 
-          <Route path="/articles/new" render={(props) => {
-             return <ArticleForm {...props}
-              addArticle={this.addArticle} />
-            }} 
-          />
+        <Route path="/articles/new" render={(props) => {
+            return <ArticleForm {...props}
+            addArticle={this.addArticle} 
+            />
+          }} 
+        />
+
+        <Route path="/articles/:articlesId(\d+)/edit" render={props => {
+            return <ArticleEditForm {...props} 
+            articles={this.state.articles} 
+            updateArticle={this.updateArticle}
+            />
+          }} 
+        />
 
         <Route
           path="/friends" render={props => {
