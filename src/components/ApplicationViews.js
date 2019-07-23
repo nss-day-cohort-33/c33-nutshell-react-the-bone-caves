@@ -7,6 +7,7 @@ import ArticleHandler from "./apiManager/ArticleHandler"
 import EventHandler from "./apiManager/EventHandler"
 import TaskHandler from "./apiManager/TaskHandler"
 import MessageHandler from "./apiManager/MessageHandler"
+import Task from "./tasks/Task"
 
 export default class ApplicationViews extends Component {
   state = {
@@ -64,7 +65,7 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/tasks" render={props => {
-            return null
+            return <Task {...props} tasks={this.state.tasks}/>
             // Remove null and return the component which will show the user's tasks
           }}
         />
