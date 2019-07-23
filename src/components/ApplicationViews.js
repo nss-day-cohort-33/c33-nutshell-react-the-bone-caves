@@ -10,6 +10,7 @@ import MessageHandler from "./apiManager/MessageHandler"
 import Events from './events/Events'
 import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
+import ArticleEditForm from './articles/ArticleEditForm'
 import MessageList from "./messages/Messages"
 
 export default class ApplicationViews extends Component {
@@ -44,6 +45,16 @@ export default class ApplicationViews extends Component {
           })
       );
 
+  updateArticle = article => {
+    return ArticleHandler.put(article)
+      .then(() => ArticleHandler.getAll())
+      .then(articles => {
+          this.setState({
+          articles: articles
+          })
+        });
+        };
+
   render() {
     return (
       <React.Fragment>
@@ -67,11 +78,20 @@ export default class ApplicationViews extends Component {
           }}
         />
 
-          <Route path="/articles/new" render={(props) => {
-             return <ArticleForm {...props}
-              addArticle={this.addArticle} />
-            }}
-          />
+        <Route path="/articles/new" render={(props) => {
+            return <ArticleForm {...props}
+            addArticle={this.addArticle} 
+            />
+          }} 
+        />
+
+        <Route path="/articles/:articlesId(\d+)/edit" render={props => {
+            return <ArticleEditForm {...props} 
+            articles={this.state.articles} 
+            updateArticle={this.updateArticle}
+            />
+          }} 
+        />
 
         <Route
           path="/friends" render={props => {
