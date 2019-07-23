@@ -1,4 +1,4 @@
-import { Route, Redirect } from "react-router-dom";
+import { Route, withRouter, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Login from "./login/Login"
 import Register from './register/register'
@@ -13,7 +13,7 @@ import ArticleForm from './articles/ArticleForm'
 import ArticleEditForm from './articles/ArticleEditForm'
 import MessageList from "./messages/Messages"
 
-export default class ApplicationViews extends Component {
+class ApplicationViews extends Component {
   state = {
     users: [],
     articles: [],
@@ -55,6 +55,15 @@ export default class ApplicationViews extends Component {
         });
         };
 
+  deleteArticle = id => ArticleHandler.delete(id)
+  .then(() => ArticleHandler.getAll())
+  .then(articles => {
+      this.setState({ 
+        articles: articles 
+      })
+      this.props.history.push("/articles")
+  })
+
   render() {
     return (
       <React.Fragment>
@@ -74,6 +83,7 @@ export default class ApplicationViews extends Component {
         <Route exact path="/articles" render={props => {
             return <ArticleList {...props}
             articles={this.state.articles}
+            deleteArticle={this.deleteArticle}
             />
           }}
         />
@@ -126,3 +136,5 @@ export default class ApplicationViews extends Component {
     );
   }
 }
+
+export default withRouter(ApplicationViews)
