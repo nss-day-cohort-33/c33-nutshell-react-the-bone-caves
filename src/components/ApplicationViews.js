@@ -2,11 +2,38 @@ import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Login from "./login/Login"
 import Register from './register/register'
+import UserHandler from "./apiManager/UserHandler"
+import ArticleHandler from "./apiManager/ArticleHandler"
+import EventHandler from "./apiManager/EventHandler"
+import TaskHandler from "./apiManager/TaskHandler"
+import MessageHandler from "./apiManager/MessageHandler"
 import Events from './events/Events'
 
 export default class ApplicationViews extends Component {
+  state = {
+    users: [],
+    articles: [],
+    events: [],
+    tasks: [],
+    messages: []
+  };
+
+  componentDidMount() {
+    UserHandler
+      .getAll()
+      .then(users => this.setState({ users: users }))
+      .then(() => ArticleHandler.getAll())
+      .then(articles => this.setState({ articles: articles }))
+      .then(() => EventHandler.getAll())
+      .then(events => this.setState({ events: events }))
+      .then(() => TaskHandler.getAll())
+      .then(tasks => this.setState({ tasks: tasks }))
+      .then(() => MessageHandler.getAll())
+      .then(messages => this.setState({ messages: messages }));
+  }
 
   render() {
+    console.log(this.state)
     return (
       <React.Fragment>
 
