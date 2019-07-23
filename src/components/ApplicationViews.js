@@ -7,6 +7,7 @@ import ArticleHandler from "./apiManager/ArticleHandler"
 import EventHandler from "./apiManager/EventHandler"
 import TaskHandler from "./apiManager/TaskHandler"
 import MessageHandler from "./apiManager/MessageHandler"
+import Events from './events/Events'
 import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
 import MessageList from "./messages/Messages"
@@ -70,7 +71,7 @@ export default class ApplicationViews extends Component {
         />
 
         <Route exact path="/articles" render={props => {
-            return <ArticleList {...props} 
+            return <ArticleList {...props}
             articles={this.state.articles}
             />
           }}
@@ -102,6 +103,13 @@ export default class ApplicationViews extends Component {
           path="/messages" render={props => {
             return <MessageList messages={this.state.messages} {...props}/>
             // Remove null and return the component which will show the messages
+          }}
+        />
+
+        <Route
+          path="/events" render={props => {
+            return <Events events={this.state.events} {...props}/>
+            // Remove null and return the component which will show the user's tasks
           }}
         />
 
