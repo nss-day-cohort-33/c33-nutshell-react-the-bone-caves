@@ -9,6 +9,7 @@ import TaskHandler from "./apiManager/TaskHandler"
 import MessageHandler from "./apiManager/MessageHandler"
 import Events from './events/Events'
 import EventForm from './events/EventForm'
+import EditEventForm from './events/EditEventForm'
 import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
 import ArticleEditForm from './articles/ArticleEditForm'
@@ -30,12 +31,19 @@ class ApplicationViews extends Component {
       .then(() => ArticleHandler.getAll())
       .then(articles => this.setState({ articles: articles }))
       .then(() => EventHandler.getAll())
-      .then(events => this.setState({ events: events }))
+      .then(events => {
+        let sortEvents = this.sortResource(events)
+        this.setState({ events: sortEvents })
+      })
       .then(() => TaskHandler.getAll())
       .then(tasks => this.setState({ tasks: tasks }))
       .then(() => MessageHandler.getAll())
       .then(messages => this.setState({ messages: messages }));
   }
+
+sortResource = arr => {
+return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
+}
 
   addArticle = article =>
   ArticleHandler.post(article)
@@ -46,13 +54,30 @@ class ApplicationViews extends Component {
           })
       );
 
-  addEvent = event =>
+  addEvent = event =>{
     EventHandler.post(event)
       .then(() => EventHandler.getAll())
-      .then(events => {
+      .then( events => {
         this.setState({events: events})
         this.props.history.push('/events')
       })
+  }
+
+  deleteEvent = id => {
+    EventHandler.delete(id)
+    .then(() => EventHandler.getAll())
+    .then( events => this.setState({events: events}))
+  }
+
+  updateEvent = editEvent => {
+    EventHandler.put(editEvent)
+    .then(() => EventHandler.getAll())
+    .then( events => {
+      this.setState({events: events})
+      this.props.history.push('/events')
+  })
+  }
+
   updateArticle = article => {
     return ArticleHandler.put(article)
       .then(() => ArticleHandler.getAll())
@@ -66,8 +91,8 @@ class ApplicationViews extends Component {
   deleteArticle = id => ArticleHandler.delete(id)
   .then(() => ArticleHandler.getAll())
   .then(articles => {
-      this.setState({ 
-        articles: articles 
+      this.setState({
+        articles: articles
       })
       this.props.history.push("/articles")
   })
@@ -127,7 +152,7 @@ class ApplicationViews extends Component {
 
         <Route
           exact path="/events" render={props => {
-            return <Events events={this.state.events} {...props}/>
+            return <Events events={this.state.events} sortEvents={this.sortEvents} {...props} deleteEvent={this.deleteEvent} updateEvennt={this.updateEvent} />
             // Remove null and return the component which will show the user's tasks
           }}
         />
@@ -136,6 +161,11 @@ class ApplicationViews extends Component {
           exact path="/events/new" render={props => {
             return <EventForm addEvent={this.addEvent} {...props} />
           }} />
+
+        <Route path="/events/:eventsId(\d+)/edit" render={props => {
+            return <EditEventForm {...props} events={this.state.events} updateEvent={this.updateEvent} />
+          }}
+        />
 
         <Route
           path="/tasks" render={props => {

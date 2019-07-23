@@ -17,7 +17,7 @@ export default class ArticleEditForm extends Component {
 
     updateExistingArticle = evt => {
         evt.preventDefault()
-  
+
           const editedArticle = {
             id: this.props.match.params.articlesId,
             title: this.state.articleTitle,
@@ -25,7 +25,7 @@ export default class ArticleEditForm extends Component {
             synopsis: this.state.articleSynopsis,
             timestamp: Date.now()
           }
-  
+
       this.props.updateArticle(editedArticle)
       .then(() => this.props.history.push("/articles"))
     }
