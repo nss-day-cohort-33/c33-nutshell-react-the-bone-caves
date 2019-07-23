@@ -14,6 +14,7 @@ import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
 import ArticleEditForm from './articles/ArticleEditForm'
 import MessageList from "./messages/Messages"
+import Welcome from "./welcome/welcome";
 
 class ApplicationViews extends Component {
   state = {
@@ -25,8 +26,7 @@ class ApplicationViews extends Component {
   };
 
   componentDidMount() {
-    UserHandler
-      .getAll()
+    UserHandler.getAll()
       .then(users => this.setState({ users: users }))
       .then(() => ArticleHandler.getAll())
       .then(articles => this.setState({ articles: articles }))
@@ -46,13 +46,23 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
 }
 
   addArticle = article =>
-  ArticleHandler.post(article)
+    ArticleHandler.post(article)
       .then(() => ArticleHandler.getAll())
       .then(articles =>
-      this.setState({
+        this.setState({
           articles: articles
-          })
+        })
       );
+
+  addUser = user =>
+    UserHandler.post(user)
+      .then(() => UserHandler.getAll())
+      .then(users =>
+        this.setState({
+          users: users
+        })
+      );
+
 
   addEvent = event =>{
     EventHandler.post(event)
@@ -97,27 +107,65 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
       this.props.history.push("/articles")
   })
 
+  isAuthenticated = () => sessionStorage.getItem("userId") !== null;
+
   render() {
+    console.log(this.state.users);
     return (
       <React.Fragment>
+        <Route
+          exact
+          path="/"
+          render={props => {
+            if (this.isAuthenticated()) {
+              return null;
+            } else {
+              return <Redirect to="/welcome" />;
+            }
+          }}
+        />
 
         <Route
-          exact path="/login" render={props => {
-            return <Login />
+          exact
+          path="/welcome"
+          render={props => {
+            return <Welcome users={this.state.users}  {...props} />;
+            // Remove null and return the component which will show news articles
+          }}
+        />
+        <Route
+          path="/welcome/login"
+          render={props => {
+            return <Login users={this.state.users} {...props} />;
             // Remove null and return the component which will show news articles
           }}
         />
 
-        <Route path="/register" render={props => {
-            return <Register />
+        <Route
+          path="/welcome/register"
+          render={props => {
+            return (
+              <Register
+                users={this.state.users}
+                addUser={this.addUser}
+                {...props}
+              />
+            );
           }}
         />
 
-        <Route exact path="/articles" render={props => {
-            return <ArticleList {...props}
+        <Route
+          exact
+          path="/articles"
+          render={props => {
+            if (this.isAuthenticated()){
+            return <ArticleList  {...props}
             articles={this.state.articles}
-            deleteArticle={this.deleteArticle}
-            />
+            deleteArticle={this.deleteArticle} />;
+            }
+            else {
+              return <Redirect to="/welcome" />;
+            }
           }}
         />
 
@@ -137,22 +185,36 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
         />
 
         <Route
-          path="/friends" render={props => {
+          path="/friends"
+          render={props => {
             // Remove null and return the component which will show list of friends
-            return null
+            return null;
           }}
         />
 
         <Route
-          path="/messages" render={props => {
-            return <MessageList messages={this.state.messages} {...props}/>
+          path="/messages"
+          render={props => {
+            if (this.isAuthenticated()) {
+              return <MessageList messages={this.state.messages} {...props} />;
+            } else {
+              return <Redirect to="/welcome" />;
+            }
+
             // Remove null and return the component which will show the messages
           }}
         />
 
         <Route
-          exact path="/events" render={props => {
-            return <Events events={this.state.events} sortEvents={this.sortEvents} {...props} deleteEvent={this.deleteEvent} updateEvennt={this.updateEvent} />
+          path="/events"
+          render={props => {
+
+            if (this.isAuthenticated()){
+              return <Events events={this.state.events} sortEvents={this.sortEvents} {...props} deleteEvent={this.deleteEvent} updateEvennt={this.updateEvent} />;
+              }
+              else {
+                return <Redirect to="/welcome" />;
+              }
             // Remove null and return the component which will show the user's tasks
           }}
         />
@@ -173,8 +235,6 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
             // Remove null and return the component which will show the user's tasks
           }}
         />
-
-
       </React.Fragment>
     );
   }
