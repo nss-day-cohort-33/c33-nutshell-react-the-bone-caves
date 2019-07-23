@@ -1,4 +1,4 @@
-import { Route, Redirect } from "react-router-dom";
+import { Route, withRouter, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Login from "./login/Login"
 import Register from './register/register'
@@ -8,12 +8,13 @@ import EventHandler from "./apiManager/EventHandler"
 import TaskHandler from "./apiManager/TaskHandler"
 import MessageHandler from "./apiManager/MessageHandler"
 import Events from './events/Events'
+import EventForm from './events/EventForm'
 import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
 import ArticleEditForm from './articles/ArticleEditForm'
 import MessageList from "./messages/Messages"
 
-export default class ApplicationViews extends Component {
+class ApplicationViews extends Component {
   state = {
     users: [],
     articles: [],
@@ -45,6 +46,13 @@ export default class ApplicationViews extends Component {
           })
       );
 
+  addEvent = event =>
+    EventHandler.post(event)
+      .then(() => EventHandler.getAll())
+      .then(events => {
+        this.setState({events: events})
+        this.props.history.push('/events')
+      })
   updateArticle = article => {
     return ArticleHandler.put(article)
       .then(() => ArticleHandler.getAll())
@@ -80,17 +88,17 @@ export default class ApplicationViews extends Component {
 
         <Route path="/articles/new" render={(props) => {
             return <ArticleForm {...props}
-            addArticle={this.addArticle} 
+            addArticle={this.addArticle}
             />
-          }} 
+          }}
         />
 
         <Route path="/articles/:articlesId(\d+)/edit" render={props => {
-            return <ArticleEditForm {...props} 
-            articles={this.state.articles} 
+            return <ArticleEditForm {...props}
+            articles={this.state.articles}
             updateArticle={this.updateArticle}
             />
-          }} 
+          }}
         />
 
         <Route
@@ -108,11 +116,16 @@ export default class ApplicationViews extends Component {
         />
 
         <Route
-          path="/events" render={props => {
+          exact path="/events" render={props => {
             return <Events events={this.state.events} {...props}/>
             // Remove null and return the component which will show the user's tasks
           }}
         />
+
+        <Route
+          exact path="/events/new" render={props => {
+            return <EventForm addEvent={this.addEvent} {...props} />
+          }} />
 
         <Route
           path="/tasks" render={props => {
@@ -126,3 +139,5 @@ export default class ApplicationViews extends Component {
     );
   }
 }
+
+export default withRouter(ApplicationViews)
