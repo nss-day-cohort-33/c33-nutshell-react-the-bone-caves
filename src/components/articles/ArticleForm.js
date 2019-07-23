@@ -19,7 +19,6 @@ export default class ArticleForm extends Component {
             title: this.state.articleTitle,
             url: this.state.articleURL,
             synopsis: this.state.articleSynopsis,
-            articleId: parseInt(this.state.articleId)
           };
           this.props.addArticle(article).then(() => this.props.history.push("/articles"))
         };
