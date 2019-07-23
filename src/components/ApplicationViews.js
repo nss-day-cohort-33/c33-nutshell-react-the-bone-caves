@@ -8,6 +8,8 @@ import EventHandler from "./apiManager/EventHandler"
 import TaskHandler from "./apiManager/TaskHandler"
 import MessageHandler from "./apiManager/MessageHandler"
 import Events from './events/Events'
+import ArticleList from './articles/Articles'
+import ArticleForm from './articles/ArticleForm'
 import MessageList from "./messages/Messages"
 
 export default class ApplicationViews extends Component {
@@ -33,13 +35,21 @@ export default class ApplicationViews extends Component {
       .then(messages => this.setState({ messages: messages }));
   }
 
+  addArticle = article =>
+  ArticleHandler.post(article)
+      .then(() => ArticleHandler.getAll())
+      .then(articles =>
+      this.setState({
+          articles: articles
+          })
+      );
+
   render() {
-    console.log(this.state)
     return (
       <React.Fragment>
 
         <Route
-          exact path="/" render={props => {
+          exact path="/login" render={props => {
             return <Login />
             // Remove null and return the component which will show news articles
           }}
@@ -49,6 +59,19 @@ export default class ApplicationViews extends Component {
             return <Register />
           }}
         />
+
+        <Route exact path="/articles" render={props => {
+            return <ArticleList {...props}
+            articles={this.state.articles}
+            />
+          }}
+        />
+
+          <Route path="/articles/new" render={(props) => {
+             return <ArticleForm {...props}
+              addArticle={this.addArticle} />
+            }}
+          />
 
         <Route
           path="/friends" render={props => {
