@@ -12,6 +12,12 @@ export default Object.create(null, {
        }
    },
 
+   getAllExpand: {
+    value: function (resource, expandResource) {
+        return fetch(`${remoteURL}/${resource}?_expand=${expandResource}&_sort=timeStamp`).then(data => data.json())
+        }
+    },
+
    delete: {
        value: function (resource, id) {
            return fetch(`${remoteURL}/${resource}/${id}`, {

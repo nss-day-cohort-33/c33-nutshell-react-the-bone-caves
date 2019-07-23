@@ -4,7 +4,8 @@ export default class ArticleForm extends Component {
     state={
         title:"",
         url:"",
-        synopsis:""
+        synopsis:"",
+        date:"",
     };
 
     handleFieldChange = evt => {
@@ -19,6 +20,8 @@ export default class ArticleForm extends Component {
             title: this.state.articleTitle,
             url: this.state.articleURL,
             synopsis: this.state.articleSynopsis,
+            date: this.state.articleDate,
+            timestamp: Date.now()
           };
           this.props.addArticle(article).then(() => this.props.history.push("/articles"))
         };
@@ -58,6 +61,17 @@ export default class ArticleForm extends Component {
                     onChange={this.handleFieldChange}
                     id="articleSynopsis"
                     placeholder="Article Synopsis"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="articleDate">Article Date</label>
+                    <input
+                    type="date"
+                    required
+                    className="form-control"
+                    onChange={this.handleFieldChange}
+                    id="articleDate"
+                    placeholder="Article Date"
                     />
                 </div>
                 <button
