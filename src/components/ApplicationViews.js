@@ -81,6 +81,15 @@ class ApplicationViews extends Component {
         });
         };
 
+  deleteArticle = id => ArticleHandler.delete(id)
+  .then(() => ArticleHandler.getAll())
+  .then(articles => {
+      this.setState({ 
+        articles: articles 
+      })
+      this.props.history.push("/articles")
+  })
+
   render() {
     return (
       <React.Fragment>
@@ -100,6 +109,7 @@ class ApplicationViews extends Component {
         <Route exact path="/articles" render={props => {
             return <ArticleList {...props}
             articles={this.state.articles}
+            deleteArticle={this.deleteArticle}
             />
           }}
         />
