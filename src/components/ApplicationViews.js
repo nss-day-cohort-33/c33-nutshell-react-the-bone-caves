@@ -11,6 +11,7 @@ import Task from "./tasks/Task"
 import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
 import MessageList from "./messages/Messages"
+import TaskForm from "./tasks/TaskForm"
 
 export default class ApplicationViews extends Component {
   state = {
@@ -35,10 +36,19 @@ export default class ApplicationViews extends Component {
       .then(messages => this.setState({ messages: messages }));
   }
 
+  deleteTask = id => {
+    TaskHandler.delete(id)
+            .then(() => TaskHandler.getAll())
+            .then(tasks => {
+
+                    this.setState({tasks: tasks})
+            })
+}
+
 
         // put functions
-        updateTask = task => taskHandler.put(task)
-                .then(() => taskHandler.getAll())
+        updateTask = task => TaskHandler.put(task)
+                .then(() => TaskHandler.getAll())
                 .then(tasks=> {
                         this.setState({
                                 task: tasks
@@ -51,6 +61,15 @@ export default class ApplicationViews extends Component {
       .then(articles =>
       this.setState({
           articles: articles
+          })
+      );
+
+  addTask = task =>
+  TaskHandler.post(task)
+      .then(() => TaskHandler.getAll())
+      .then(tasks =>
+      this.setState({
+          tasks: tasks
           })
       );
 
@@ -97,9 +116,16 @@ export default class ApplicationViews extends Component {
           }}
         />
 
-        <Route
+        <Route exact
+          path="/tasks/new" render={props => {
+            return <TaskForm {...props}  addTask={this.addTask}/>
+            // Remove null and return the component which will show the user's tasks
+          }}
+        />
+
+        <Route exact
           path="/tasks" render={props => {
-            return <Task {...props} tasks={this.state.tasks} updateTask={this.updateTask}/>
+            return <Task {...props} tasks={this.state.tasks} updateTask={this.updateTask} deleteTask={this.deleteTask}/>
             // Remove null and return the component which will show the user's tasks
           }}
         />

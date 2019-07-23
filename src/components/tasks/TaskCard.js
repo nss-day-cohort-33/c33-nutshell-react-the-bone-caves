@@ -4,34 +4,34 @@ import React, { Component } from "react"
 
 
 export default class TaskCard extends Component {
-    state = {
-        completedate:""
-    }
-    handleFieldChange = evt => {
-        const stateToChange = {}
-        stateToChange[evt.target.id] = evt.target.value;
-        this.setState(stateToChange);
-      }
-      taskComplete =evt =>{
-        evt.preventDefault();
-        const task = {
-          id: this.props.match.params.taskId,
-          iscompleted: this.state.iscompleted
-          }
+    // state = {
+    //     completedate:""
+    // }
+    // handleFieldChange = evt => {
+    //     const stateToChange = {}
+    //     stateToChange[evt.target.id] = evt.target.value;
+    //     this.setState(stateToChange);
+    //   }
+    //   taskComplete =evt =>{
+    //     evt.preventDefault();
+    //     const task = {
+    //       id: this.props.match.params.taskId,
+    //       iscompleted: this.state.iscompleted
+    //       }
 
-          this.props
-            .taskComplete(task)
+    //       this.props
+    //         .taskComplete(task)
 
-      };
-      componentDidMount() {
-        updateTask.get(this.props.match.params.id)
-        .then(tasks => {
-          this.setState({
-            id: this.props.match.params.taskId,
-            iscompleted: tasks.state.iscompleted
-          });
-        });
-      }
+    //   };
+    //   componentDidMount() {
+    //     updateTask.get(this.props.match.params.id)
+    //     .then(tasks => {
+    //       this.setState({
+    //         id: this.props.match.params.taskId,
+    //         iscompleted: tasks.state.iscompleted
+    //       });
+    //     });
+    //   }
 
     render() {
         return (
@@ -46,7 +46,7 @@ export default class TaskCard extends Component {
                     </h5>
                     <p>Due Date: {this.props.task.completedate}</p>
                     <button onClick={() => this.props.deleteTask(this.props.task.id)}
-                         className="card-link"> Details</button>
+                         className="card-link"> Delete</button>
                 </div>
             </div>
         )
