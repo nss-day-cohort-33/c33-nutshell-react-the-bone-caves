@@ -19,6 +19,7 @@ import MessageList from "./messages/Messages";
 import TaskForm from "./tasks/TaskForm";
 import TaskEditForm from "./tasks/TaskEditForm";
 import Welcome from "./welcome/welcome";
+import DashboardList from "./dashboard/Dashboard";
 
 class ApplicationViews extends Component {
   state = {
@@ -120,32 +121,32 @@ class ApplicationViews extends Component {
   addEvent = event => {
     EventHandler.post(event)
       .then(() => EventHandler.get("?_expand=user"))
-      .then(events => {
-        let sortEvents = this.sortEvent(events);
-        this.setState({ events: sortEvents });
-        this.props.history.push("/events");
-      });
-  };
+      .then( events => {
+        let sortEvents = this.sortEvent(events)
+        this.setState({ events: sortEvents })
+        this.props.history.push("/events")
+      })
+  }
 
   deleteEvent = id => {
     EventHandler.delete(id)
-      .then(() => EventHandler.get("?_expand=user"))
-      .then(events => {
-        let sortEvents = this.sortEvent(events);
-        this.setState({ events: sortEvents });
-        this.props.history.push("/events");;
-      });
-  };
+    .then(() => EventHandler.get("?_expand=user"))
+      .then( events => {
+        let sortEvents = this.sortEvent(events)
+        this.setState({ events: sortEvents })
+        this.props.history.push("/events")
+      })
+  }
 
   updateEvent = editEvent => {
     EventHandler.put(editEvent)
-      .then(() => EventHandler.get("?_expand=user"))
-      .then(events => {
-        let sortEvents = this.sortEvent(events);
-        this.setState({ events: sortEvents });
-        this.props.history.push("/events");;
-      });
-  };
+    .then(() => EventHandler.get("?_expand=user"))
+    .then( events => {
+      let sortEvents = this.sortEvent(events)
+      this.setState({ events: sortEvents })
+      this.props.history.push("/events")
+  })
+  }
 
   updateArticle = article => {
     return ArticleHandler.put(article)
@@ -222,19 +223,42 @@ class ApplicationViews extends Component {
           }}
         />
 
+          <Route
+          exact
+          path="/"
+          render={props => {
+            if (this.isAuthenticated()){
+            return <DashboardList  {...props}
+            state={this.state}
+            articles={this.state.articles}
+            deleteArticle={this.deleteArticle}
+            updateArticle={this.updateArticle}
+            messages={this.state.messages}
+            tasks={this.state.tasks}
+            deleteTask={this.deleteTask}
+            updateTask={this.updateTask}
+            events={this.state.events}
+            deleteEvent={this.deleteEvent}
+            updateEvennt={this.updateEvent}
+            />;
+            }
+            else {
+              return <Redirect to="/welcome" />;
+            }
+          }}
+        />
+
         <Route
           exact
           path="/articles"
           render={props => {
-            if (this.isAuthenticated()) {
-              return (
-                <ArticleList
-                  {...props}
-                  articles={this.state.articles}
-                  deleteArticle={this.deleteArticle}
-                />
-              );
-            } else {
+            if (this.isAuthenticated()){
+            return <ArticleList  {...props}
+            articles={this.state.articles}
+            deleteArticle={this.deleteArticle}
+            friends={this.state.friends} />;
+            }
+            else {
               return <Redirect to="/welcome" />;
             }
           }}
