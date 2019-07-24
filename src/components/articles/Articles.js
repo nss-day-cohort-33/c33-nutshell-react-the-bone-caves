@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import './Articles.css'
 
 export default class ArticleList extends Component {
     state = {
         saveDisabled: false
     }
+
     render () {
         return (
         <React.Fragment>
@@ -19,7 +21,7 @@ export default class ArticleList extends Component {
             <section className="articles">
                 {
                     this.props.articles.map(article => 
-                        <div key ={article.id} className="card">
+                        <div key ={article.id} className={article.userId === +sessionStorage.getItem("userId") ? "article-card user-article" : "article-card friend-article"}>
                             <div className="card-body">
                                 <div className="card-title">
                                 <h6>{article.title}</h6>
@@ -32,6 +34,7 @@ export default class ArticleList extends Component {
                                     onClick={() => {
                                         this.props.history.push(`/articles/${article.id}/edit`);
                                     }}
+                                    style={{display: article.userId === +sessionStorage.getItem("userId")  ? "" : "none"}}
                                     >
                                     Edit
                                 </button>
@@ -43,7 +46,9 @@ export default class ArticleList extends Component {
                                         () => this.props.deleteArticle(article.id),
                                         )
                                     }
-                                }>Delete</button>
+                                }
+                                style={{display: article.userId === +sessionStorage.getItem("userId")  ? "" : "none"}}
+                                >Delete</button>
                                 </div>
                             </div>
                         </div>

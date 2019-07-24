@@ -6,6 +6,7 @@ export default class ArticleForm extends Component {
         url:"",
         synopsis:"",
         date:"",
+        userId: ""
     };
 
     handleFieldChange = evt => {
@@ -17,6 +18,7 @@ export default class ArticleForm extends Component {
     constructNewArticle = evt => {
         evt.preventDefault();
           const article = {
+            userId: +sessionStorage.getItem("userId"),
             title: this.state.articleTitle,
             url: this.state.articleURL,
             synopsis: this.state.articleSynopsis,
