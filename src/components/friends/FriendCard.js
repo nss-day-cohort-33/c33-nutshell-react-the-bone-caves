@@ -12,7 +12,11 @@ state = {
 getRelationshipId = arr => {
   arr.forEach( friendShip => {
     if (friendShip.userId_1 === this.state.id || friendShip.userId_2 === this.state.id) {
-        this.props.deleteFriend(friendShip.id)
+        if (window.confirm(`Are you sure you want to remove ${this.state.username} as a friend?`)) {
+          this.props.deleteFriend(friendShip.id)
+        } else {
+          this.setState({saveDisabled: false})
+        }
     }
   })
 
@@ -25,10 +29,10 @@ getRelationshipId = arr => {
           <p>Email: {this.state.email}</p>
           <button
             className="btn btn-danger"
-            onClick={() => this.setState(
-              {saveDisabled: true},
+            onClick={() => {
+              this.setState({saveDisabled: true})
               this.getRelationshipId(this.state.friends)
-            )}
+            }}
             disabled={this.state.saveDisabled}
           >
             Delete Event

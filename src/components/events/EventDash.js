@@ -38,7 +38,7 @@ createEvents = arr => {
      return(
       <React.Fragment>
         <h1>Events</h1>
-        <section className="events-section">
+        <section className="events-dash">
           {
             this.showFriends(this.props.friends).map( event => <EventCard key={event.id} event={event} deleteEvent={this.props.deleteEvent} updateEvent={this.props.updateEvent} {...this.props} />)
           }
