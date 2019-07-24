@@ -19,6 +19,7 @@ import MessageList from "./messages/Messages"
 import TaskForm from "./tasks/TaskForm"
 import TaskEditForm from "./tasks/TaskEditForm"
 import Welcome from "./welcome/welcome";
+import DashboardList from "./dashboard/Dashboard";
 
 class ApplicationViews extends Component {
   state = {
@@ -125,7 +126,7 @@ sortEvent = arr => {
       .then( events => {
         let sortEvents = this.sortEvent(events)
         this.setState({ events: sortEvents })
-        this.props.history.push('/events')
+        this.props.history.push("/events")
       })
   }
 
@@ -135,7 +136,7 @@ sortEvent = arr => {
       .then( events => {
         let sortEvents = this.sortEvent(events)
         this.setState({ events: sortEvents })
-        this.props.history.push('/events')
+        this.props.history.push("/events")
       })
   }
 
@@ -145,7 +146,7 @@ sortEvent = arr => {
     .then( events => {
       let sortEvents = this.sortEvent(events)
       this.setState({ events: sortEvents })
-      this.props.history.push('/events')
+      this.props.history.push("/events")
   })
   }
 
@@ -222,6 +223,31 @@ sortEvent = arr => {
           }}
         />
 
+          <Route
+          exact
+          path="/"
+          render={props => {
+            if (this.isAuthenticated()){
+            return <DashboardList  {...props}
+            state={this.state}
+            articles={this.state.articles}
+            deleteArticle={this.deleteArticle}
+            updateArticle={this.updateArticle}
+            messages={this.state.messages} 
+            tasks={this.state.tasks}  
+            deleteTask={this.deleteTask}
+            updateTask={this.updateTask}
+            events={this.state.events}
+            deleteEvent={this.deleteEvent} 
+            updateEvennt={this.updateEvent}
+            />;
+            }
+            else {
+              return <Redirect to="/welcome" />;
+            }
+          }}
+        />
+
         <Route
           exact
           path="/articles"
@@ -229,7 +255,8 @@ sortEvent = arr => {
             if (this.isAuthenticated()){
             return <ArticleList  {...props}
             articles={this.state.articles}
-            deleteArticle={this.deleteArticle} />;
+            deleteArticle={this.deleteArticle} 
+            friends={this.state.friends} />;
             }
             else {
               return <Redirect to="/welcome" />;
