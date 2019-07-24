@@ -7,6 +7,7 @@ import ArticleHandler from "./apiManager/ArticleHandler"
 import EventHandler from "./apiManager/EventHandler"
 import TaskHandler from "./apiManager/TaskHandler"
 import MessageHandler from "./apiManager/MessageHandler"
+import Task from "./tasks/Task"
 import Events from './events/Events'
 import EventForm from './events/EventForm'
 import EditEventForm from './events/EditEventForm'
@@ -14,6 +15,8 @@ import ArticleList from './articles/Articles'
 import ArticleForm from './articles/ArticleForm'
 import ArticleEditForm from './articles/ArticleEditForm'
 import MessageList from "./messages/Messages"
+import TaskForm from "./tasks/TaskForm"
+import TaskEditForm from "./tasks/TaskEditForm"
 import Welcome from "./welcome/welcome";
 
 class ApplicationViews extends Component {
@@ -41,6 +44,24 @@ class ApplicationViews extends Component {
       .then(messages => this.setState({ messages: messages }));
   }
 
+  deleteTask = id => {
+    TaskHandler.delete(id)
+      .then(() => TaskHandler.getAll())
+      .then(tasks => {
+
+        this.setState({ tasks: tasks })
+      })
+  }
+
+
+  // put functions
+  updateTask = task => TaskHandler.put(task)
+    .then(() => TaskHandler.getAll())
+    .then(tasks => {
+      this.setState({
+        tasks: tasks
+      })
+    })
 sortResource = arr => {
 return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
 }
@@ -53,6 +74,17 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
           articles: articles
         })
       );
+
+  addTask = task =>
+    TaskHandler.post(task)
+      .then(() => TaskHandler.getAll())
+      .then(tasks =>
+        this.setState({
+          tasks: tasks
+        })
+      );
+
+
 
   addUser = user =>
     UserHandler.post(user)
@@ -113,6 +145,7 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
     console.log(this.state.users);
     return (
       <React.Fragment>
+
         <Route
           exact
           path="/"
@@ -141,7 +174,24 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
           }}
         />
 
-        <Route
+        <Route path="/register" render={props => {
+          return <Register />
+        }}
+        />
+
+        <Route exact path="/articles" render={props => {
+          return <ArticleList {...props}
+            articles={this.state.articles}
+          />
+        }}
+        />
+
+        <Route path="/articles/new" render={(props) => {
+          return <ArticleForm {...props}
+            addArticle={this.addArticle} />
+        }} />
+
+        < Route
           path="/welcome/register"
           render={props => {
             return (
@@ -193,8 +243,8 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
         />
 
         <Route
-          path="/messages"
-          render={props => {
+          path="/messages" render={props => {
+
             if (this.isAuthenticated()) {
               return <MessageList messages={this.state.messages} {...props} />;
             } else {
@@ -205,6 +255,10 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
           }}
         />
 
+        <Route exact
+          path="/tasks/new" render={props => {
+            return <TaskForm {...props} addTask={this.addTask} />
+          }}/>
         <Route
           path="/events"
           render={props => {
@@ -218,6 +272,17 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
             // Remove null and return the component which will show the user's tasks
           }}
         />
+        <Route exact
+          path="/tasks/:id(\d+)/edit" render={props => {
+            return <TaskEditForm {...props} updateTask={this.updateTask} tasks={this.tasks} />
+          }}
+          />
+        <Route exact
+          path="/tasks" render={props => {
+          return <Task {...props} tasks={this.state.tasks}  deleteTask={this.deleteTask} />
+          // Remove null and return the component which will show the user's tasks
+        }}
+        />
 
         <Route
           exact path="/events/new" render={props => {
@@ -229,15 +294,10 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
           }}
         />
 
-        <Route
-          path="/tasks" render={props => {
-            return null
-            // Remove null and return the component which will show the user's tasks
-          }}
-        />
-      </React.Fragment>
+     </React.Fragment>
     );
   }
 }
 
-export default withRouter(ApplicationViews)
+
+export default withRouter (ApplicationViews)
