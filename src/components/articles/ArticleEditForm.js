@@ -6,7 +6,8 @@ export default class ArticleEditForm extends Component {
     state = {
         articleTitle: "",
         articleURL: "",
-        articleSynopsis:""
+        articleSynopsis:"",
+        articleDate:""
       };
 
       handleFieldChange = evt => {
@@ -19,11 +20,13 @@ export default class ArticleEditForm extends Component {
         evt.preventDefault()
 
           const editedArticle = {
+            userId: +sessionStorage.getItem("userId"),
             id: this.props.match.params.articlesId,
             title: this.state.articleTitle,
             url: this.state.articleURL,
             synopsis: this.state.articleSynopsis,
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            date: this.state.articleDate
           }
 
       this.props.updateArticle(editedArticle)
@@ -35,7 +38,8 @@ export default class ArticleEditForm extends Component {
           this.setState({
             articleTitle: article.title,
             articleURL: article.url,
-            articleSynopsis: article.synopsis
+            articleSynopsis: article.synopsis,
+            articleDate: article.date
           });
         });
       }
