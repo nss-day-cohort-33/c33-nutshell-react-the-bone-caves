@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 
 export default class EventForm extends Component {
   state ={
-    addUserId: '2',
+    addUserId: '',
     addEvent_name: '',
     addDate: '',
     addTime: '',
@@ -23,7 +23,7 @@ export default class EventForm extends Component {
     let newLocation = document.querySelector("#addLocation").value
     if (newName && newDate && newTime && newLocation) {
       const event = {
-        userId: +this.state.addUserId,
+        userId: +sessionStorage.getItem("userId"),
         event_name: this.state.addEvent_name,
         date: this.state.addDate,
         time: this.state.addTime,
