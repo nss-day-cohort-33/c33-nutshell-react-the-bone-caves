@@ -20,7 +20,7 @@ isUser = () => this.state.userId === +sessionStorage.getItem("userId");
           <h3>{this.state.event_name}</h3>
           <p><b>Day</b>: {this.state.date}</p>
           <p><b>Time</b>: {this.state.time}</p>
-          <p><b>Location</b>: {this.state.location}</p>
+          <p><b>Location</b>: {this.state.locations}</p>
           <button
             id={`editEvent-${this.state.id}`}
             className="btn btn-warning"
