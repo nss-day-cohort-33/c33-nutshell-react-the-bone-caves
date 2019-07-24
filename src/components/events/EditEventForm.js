@@ -42,7 +42,8 @@ export default class EventForm extends Component {
         event_name: this.state.editEvent_name,
         date: this.state.editDate,
         time: this.state.editTime,
-        location: this.state.editLocation
+        location: this.state.editLocation,
+        userId: this.state.editUserId
       }
       this.props.updateEvent(event)
     } else {
