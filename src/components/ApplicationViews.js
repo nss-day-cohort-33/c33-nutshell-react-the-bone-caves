@@ -2,6 +2,7 @@ import { Route, withRouter, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Login from "./login/Login"
 import Register from './register/register'
+import FriendHandler from "./apiManager/FriendHandler"
 import UserHandler from "./apiManager/UserHandler"
 import ArticleHandler from "./apiManager/ArticleHandler"
 import EventHandler from "./apiManager/EventHandler"
@@ -25,17 +26,23 @@ class ApplicationViews extends Component {
     articles: [],
     events: [],
     tasks: [],
-    messages: []
+    messages: [],
+    friends: []
   };
 
   componentDidMount() {
     UserHandler.getAll()
       .then(users => this.setState({ users: users }))
+      .then(() => FriendHandler.getAll())
+      .then(friends => {
+        let sortFriends = this.sortFriend(friends)
+        this.setState({ friends: sortFriends })
+      })
       .then(() => ArticleHandler.getAll())
       .then(articles => {
         let sortArticles = this.sortArticle(articles)
         this.setState({ articles: sortArticles })})
-      .then(() => EventHandler.getAll())
+      .then(() => EventHandler.get("?_expand=user"))
       .then(events => {
         let sortEvents = this.sortEvent(events)
         this.setState({ events: sortEvents })
@@ -55,6 +62,15 @@ class ApplicationViews extends Component {
       })
   }
 
+  sortFriend = (arr) => {
+    let id = +sessionStorage.getItem("userId")
+    let friendArr = arr.filter( friend=> {
+      if (friend.userId_1 === id ||friend.userId_2 === id) {
+        return friend
+      }
+    })
+    return friendArr
+  }
 
   // put functions
   updateTask = task => TaskHandler.put(task)
@@ -267,7 +283,7 @@ sortEvent = arr => {
           render={props => {
 
             if (this.isAuthenticated()){
-              return <Events events={this.state.events} sortEvents={this.sortEvents} {...props} deleteEvent={this.deleteEvent} updateEvennt={this.updateEvent} />;
+              return <Events events={this.state.events} sortEvents={this.sortEvents} {...props} deleteEvent={this.deleteEvent} updateEvennt={this.updateEvent} friends={this.state.friends} users={this.state.users} />;
               }
               else {
                 return <Redirect to="/welcome" />;
