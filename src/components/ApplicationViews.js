@@ -190,18 +190,6 @@ return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
         }}
         />
 
-        <Route exact path="/articles" render={props => {
-          return <ArticleList {...props}
-            articles={this.state.articles}
-          />
-        }}
-        />
-
-        <Route path="/articles/new" render={(props) => {
-          return <ArticleForm {...props}
-            addArticle={this.addArticle} />
-        }} />
-
         < Route
           path="/welcome/register"
           render={props => {
