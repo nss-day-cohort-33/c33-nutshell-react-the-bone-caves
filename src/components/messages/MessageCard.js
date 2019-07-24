@@ -8,6 +8,12 @@ export default class MessageCard extends Component {
           <div className="card-title">
             <h5>{this.props.message.username}</h5>
             <p>{this.props.message.message}</p>
+            <a href="#"
+              onClick={() => this.props.deleteMessage(this.props.message.id)}
+              className="card-link"
+            >
+              Delete
+            </a>
           </div>
         </div>
       </div>

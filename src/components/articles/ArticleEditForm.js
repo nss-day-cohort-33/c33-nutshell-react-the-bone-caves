@@ -19,6 +19,7 @@ export default class ArticleEditForm extends Component {
         evt.preventDefault()
 
           const editedArticle = {
+            userId: +sessionStorage.getItem("userId"),
             id: this.props.match.params.articlesId,
             title: this.state.articleTitle,
             url: this.state.articleURL,
