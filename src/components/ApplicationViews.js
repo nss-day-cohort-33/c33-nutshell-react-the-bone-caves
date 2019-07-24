@@ -16,6 +16,7 @@ import ArticleList from "./articles/Articles";
 import ArticleForm from "./articles/ArticleForm";
 import ArticleEditForm from "./articles/ArticleEditForm";
 import MessageList from "./messages/Messages";
+import Friends from "./friends/Friends"
 import TaskForm from "./tasks/TaskForm";
 import TaskEditForm from "./tasks/TaskEditForm";
 import Welcome from "./welcome/welcome";
@@ -138,6 +139,16 @@ class ApplicationViews extends Component {
       })
   }
 
+  deleteFriend = id => {
+    FriendHandler.delete(id)
+    .then(() => FriendHandler.getAll())
+      .then( friends => {
+        let sortFriends = this.sortFriend(friends);
+        this.setState({ friends: sortFriends });
+        this.props.history.push("/friends")
+      })
+  }
+
   updateEvent = editEvent => {
     EventHandler.put(editEvent)
     .then(() => EventHandler.get("?_expand=user"))
@@ -248,6 +259,14 @@ class ApplicationViews extends Component {
           }}
         />
 
+        <Route exact path="/friends" render={ props => {
+          if (this.isAuthenticated()) {
+            return <Friends {...props} friends={this.state.friends} users={this.state.users} deleteFriend={this.deleteFriend} />
+          } else {
+            return <Redirect to="/welcome" />
+          }
+        }} />
+
         <Route
           exact
           path="/articles"
@@ -281,14 +300,6 @@ class ApplicationViews extends Component {
                 updateArticle={this.updateArticle}
               />
             );
-          }}
-        />
-
-        <Route
-          path="/friends"
-          render={props => {
-            // Remove null and return the component which will show list of friends
-            return null;
           }}
         />
 
