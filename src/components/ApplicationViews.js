@@ -100,7 +100,8 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
     EventHandler.post(event)
       .then(() => EventHandler.getAll())
       .then( events => {
-        this.setState({events: events})
+        let sortEvents = this.sortResource(events)
+        this.setState({ events: sortEvents })
         this.props.history.push('/events')
       })
   }
@@ -108,14 +109,20 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
   deleteEvent = id => {
     EventHandler.delete(id)
     .then(() => EventHandler.getAll())
-    .then( events => this.setState({events: events}))
+    .then(() => EventHandler.getAll())
+      .then( events => {
+        let sortEvents = this.sortResource(events)
+        this.setState({ events: sortEvents })
+        this.props.history.push('/events')
+      })
   }
 
   updateEvent = editEvent => {
     EventHandler.put(editEvent)
     .then(() => EventHandler.getAll())
     .then( events => {
-      this.setState({events: events})
+      let sortEvents = this.sortResource(events)
+      this.setState({ events: sortEvents })
       this.props.history.push('/events')
   })
   }
@@ -142,7 +149,6 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
   isAuthenticated = () => sessionStorage.getItem("userId") !== null;
 
   render() {
-    console.log(this.state.users);
     return (
       <React.Fragment>
 
@@ -221,7 +227,7 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
 
         <Route path="/articles/new" render={(props) => {
             return <ArticleForm {...props}
-            addArticle={this.addArticle}
+              addArticle={this.addArticle}
             />
           }}
         />
@@ -260,7 +266,7 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
             return <TaskForm {...props} addTask={this.addTask} />
           }}/>
         <Route
-          path="/events"
+          exact path="/events"
           render={props => {
 
             if (this.isAuthenticated()){
@@ -289,7 +295,7 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
             return <EventForm addEvent={this.addEvent} {...props} />
           }} />
 
-        <Route path="/events/:eventsId(\d+)/edit" render={props => {
+        <Route exact path="/events/:eventsId(\d+)/edit" render={props => {
             return <EditEventForm {...props} events={this.state.events} updateEvent={this.updateEvent} />
           }}
         />
