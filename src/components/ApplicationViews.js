@@ -52,7 +52,7 @@ export default class ApplicationViews extends Component {
     .then(() => TaskHandler.getAll())
     .then(tasks => {
       this.setState({
-        task: tasks
+        tasks: tasks
       })
     })
 
@@ -131,7 +131,7 @@ export default class ApplicationViews extends Component {
           />
         <Route exact
           path="/tasks" render={props => {
-          return <Task {...props} tasks={this.state.tasks} updateTask={this.updateTask} deleteTask={this.deleteTask} />
+          return <Task {...props} tasks={this.state.tasks}  deleteTask={this.deleteTask} />
           // Remove null and return the component which will show the user's tasks
         }}
         />
