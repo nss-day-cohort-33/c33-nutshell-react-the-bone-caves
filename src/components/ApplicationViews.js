@@ -147,7 +147,6 @@ return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
   isAuthenticated = () => sessionStorage.getItem("userId") !== null;
 
   render() {
-    console.log(this.state.users);
     return (
       <React.Fragment>
 
