@@ -1,22 +1,23 @@
 import { Route, withRouter, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import Login from "./login/Login";
-import Register from "./register/register";
-import UserHandler from "./apiManager/UserHandler";
-import ArticleHandler from "./apiManager/ArticleHandler";
-import EventHandler from "./apiManager/EventHandler";
-import TaskHandler from "./apiManager/TaskHandler";
-import MessageHandler from "./apiManager/MessageHandler";
-import Task from "./tasks/Task";
-import Events from "./events/Events";
-import EventForm from "./events/EventForm";
-import EditEventForm from "./events/EditEventForm";
-import ArticleList from "./articles/Articles";
-import ArticleForm from "./articles/ArticleForm";
-import ArticleEditForm from "./articles/ArticleEditForm";
-import MessageList from "./messages/Messages";
-import TaskForm from "./tasks/TaskForm";
-import TaskEditForm from "./tasks/TaskEditForm";
+import Login from "./login/Login"
+import Register from './register/register'
+import FriendHandler from "./apiManager/FriendHandler"
+import UserHandler from "./apiManager/UserHandler"
+import ArticleHandler from "./apiManager/ArticleHandler"
+import EventHandler from "./apiManager/EventHandler"
+import TaskHandler from "./apiManager/TaskHandler"
+import MessageHandler from "./apiManager/MessageHandler"
+import Task from "./tasks/Task"
+import Events from './events/Events'
+import EventForm from './events/EventForm'
+import EditEventForm from './events/EditEventForm'
+import ArticleList from './articles/Articles'
+import ArticleForm from './articles/ArticleForm'
+import ArticleEditForm from './articles/ArticleEditForm'
+import MessageList from "./messages/Messages"
+import TaskForm from "./tasks/TaskForm"
+import TaskEditForm from "./tasks/TaskEditForm"
 import Welcome from "./welcome/welcome";
 
 class ApplicationViews extends Component {
@@ -25,21 +26,26 @@ class ApplicationViews extends Component {
     articles: [],
     events: [],
     tasks: [],
-    messages: []
+    messages: [],
+    friends: []
   };
 
   componentDidMount() {
     UserHandler.getAll()
       .then(users => this.setState({ users: users }))
+      .then(() => FriendHandler.getAll())
+      .then(friends => {
+        let sortFriends = this.sortFriend(friends)
+        this.setState({ friends: sortFriends })
+      })
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortResource(articles);
-        this.setState({ articles: sortArticles });
-      })
-      .then(() => EventHandler.getAll())
+        let sortArticles = this.sortArticle(articles)
+        this.setState({ articles: sortArticles })})
+      .then(() => EventHandler.get("?_expand=user"))
       .then(events => {
-        let sortEvents = this.sortResource(events);
-        this.setState({ events: sortEvents });
+        let sortEvents = this.sortEvent(events)
+        this.setState({ events: sortEvents })
       })
       .then(() => TaskHandler.getAll())
       .then(tasks => this.setState({ tasks: tasks }))
@@ -54,28 +60,41 @@ class ApplicationViews extends Component {
     TaskHandler.delete(id)
       .then(() => TaskHandler.getAll())
       .then(tasks => {
-        this.setState({ tasks: tasks });
-      });
-  };
+        this.setState({ tasks: tasks })
+      })
+  }
+
+  sortFriend = (arr) => {
+    let id = +sessionStorage.getItem("userId")
+    let friendArr = arr.filter( friend=> {
+      if (friend.userId_1 === id ||friend.userId_2 === id) {
+        return friend
+      }
+    })
+    return friendArr
+  }
 
   // put functions
-  updateTask = task =>
-    TaskHandler.put(task)
-      .then(() => TaskHandler.getAll())
-      .then(tasks => {
-        this.setState({
-          tasks: tasks
-        });
-      });
-  sortResource = arr => {
-    return arr.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-  };
+  updateTask = task => TaskHandler.put(task)
+    .then(() => TaskHandler.getAll())
+    .then(tasks => {
+      this.setState({
+        tasks: tasks
+      })
+    })
+sortArticle = arr => {
+return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
+}
+
+sortEvent = arr => {
+  return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
+  }
 
   addArticle = article =>
     ArticleHandler.post(article)
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortResource(articles);
+        let sortArticles = this.sortArticle(articles)
         this.setState({
           articles: sortArticles
         });
@@ -115,56 +134,54 @@ class ApplicationViews extends Component {
 
   addEvent = event => {
     EventHandler.post(event)
-      .then(() => EventHandler.getAll())
-      .then(events => {
-        let sortEvents = this.sortResource(events);
-        this.setState({ events: sortEvents });
-        this.props.history.push("/events");
-      });
-  };
+      .then(() => EventHandler.get("?_expand=user"))
+      .then( events => {
+        let sortEvents = this.sortEvent(events)
+        this.setState({ events: sortEvents })
+        this.props.history.push('/events')
+      })
+  }
 
   deleteEvent = id => {
     EventHandler.delete(id)
-      .then(() => EventHandler.getAll())
-      .then(() => EventHandler.getAll())
-      .then(events => {
-        let sortEvents = this.sortResource(events);
-        this.setState({ events: sortEvents });
-        this.props.history.push("/events");
-      });
-  };
+    .then(() => EventHandler.get("?_expand=user"))
+      .then( events => {
+        let sortEvents = this.sortEvent(events)
+        this.setState({ events: sortEvents })
+        this.props.history.push('/events')
+      })
+  }
 
   updateEvent = editEvent => {
     EventHandler.put(editEvent)
-      .then(() => EventHandler.getAll())
-      .then(events => {
-        let sortEvents = this.sortResource(events);
-        this.setState({ events: sortEvents });
-        this.props.history.push("/events");
-      });
-  };
+    .then(() => EventHandler.get("?_expand=user"))
+    .then( events => {
+      let sortEvents = this.sortEvent(events)
+      this.setState({ events: sortEvents })
+      this.props.history.push('/events')
+  })
+  }
 
   updateArticle = article => {
     return ArticleHandler.put(article)
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortResource(articles);
-        this.setState({
+          let sortArticles = this.sortArticle(articles)
+          this.setState({
           articles: sortArticles
         });
       });
   };
 
-  deleteArticle = id =>
-    ArticleHandler.delete(id)
-      .then(() => ArticleHandler.getAll())
-      .then(articles => {
-        let sortArticles = this.sortResource(articles);
-        this.setState({
-          articles: sortArticles
-        });
-        this.props.history.push("/articles");
-      });
+  deleteArticle = id => ArticleHandler.delete(id)
+  .then(() => ArticleHandler.getAll())
+  .then(articles => {
+      let sortArticles = this.sortArticle(articles)
+      this.setState({
+        articles: sortArticles
+      })
+      this.props.history.push("/articles")
+  })
 
   isAuthenticated = () => sessionStorage.getItem("userId") !== null;
 
@@ -300,6 +317,7 @@ class ApplicationViews extends Component {
             if (this.isAuthenticated()) {
               return (
                 <Events
+                  friends={this.state.friends}
                   events={this.state.events}
                   sortEvents={this.sortEvents}
                   {...props}
