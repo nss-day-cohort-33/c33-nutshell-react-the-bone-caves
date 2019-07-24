@@ -11,6 +11,13 @@ getAll: {
         return ApiHandler.all("Articles")
     }
 },
+
+getAllExpand: {
+    value: function (){
+        return ApiHandler.getAllExpand("articles", "articles")
+    }
+},
+
 delete: {
     value: function(id){
         return ApiHandler.delete("Articles", id)

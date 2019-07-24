@@ -22,7 +22,8 @@ export default class ArticleEditForm extends Component {
             id: this.props.match.params.articlesId,
             title: this.state.articleTitle,
             url: this.state.articleURL,
-            synopsis: this.state.articleSynopsis
+            synopsis: this.state.articleSynopsis,
+            timestamp: Date.now()
           }
 
       this.props.updateArticle(editedArticle)

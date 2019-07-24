@@ -32,7 +32,9 @@ class ApplicationViews extends Component {
     UserHandler.getAll()
       .then(users => this.setState({ users: users }))
       .then(() => ArticleHandler.getAll())
-      .then(articles => this.setState({ articles: articles }))
+      .then(articles => {
+        let sortArticles = this.sortResource(articles)
+        this.setState({ articles: sortArticles })})
       .then(() => EventHandler.getAll())
       .then(events => {
         let sortEvents = this.sortResource(events)
@@ -63,16 +65,17 @@ class ApplicationViews extends Component {
       })
     })
 sortResource = arr => {
-return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
+return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
 }
 
   addArticle = article =>
     ArticleHandler.post(article)
       .then(() => ArticleHandler.getAll())
-      .then(articles =>
+      .then(articles => {
+        let sortArticles = this.sortResource(articles)
         this.setState({
-          articles: articles
-        })
+          articles: sortArticles
+        })}
       );
 
   addTask = task =>
@@ -131,8 +134,9 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
     return ArticleHandler.put(article)
       .then(() => ArticleHandler.getAll())
       .then(articles => {
+          let sortArticles = this.sortResource(articles)
           this.setState({
-          articles: articles
+          articles: sortArticles
           })
         });
         };
@@ -140,8 +144,9 @@ return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
   deleteArticle = id => ArticleHandler.delete(id)
   .then(() => ArticleHandler.getAll())
   .then(articles => {
+      let sortArticles = this.sortResource(articles)
       this.setState({
-        articles: articles
+        articles: sortArticles
       })
       this.props.history.push("/articles")
   })
