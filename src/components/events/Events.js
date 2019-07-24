@@ -46,7 +46,7 @@ createEvents = arr => {
             Add Event
           </button>
         </div>
-        <section className="events">
+        <section className="events-section">
           {
             this.showFriends(this.props.friends).map( event => <EventCard key={event.id} event={event} deleteEvent={this.props.deleteEvent} updateEvent={this.props.updateEvent} {...this.props} />)
           }
