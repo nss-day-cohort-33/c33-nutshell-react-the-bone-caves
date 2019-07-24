@@ -16,6 +16,7 @@ import ArticleList from "./articles/Articles";
 import ArticleForm from "./articles/ArticleForm";
 import ArticleEditForm from "./articles/ArticleEditForm";
 import MessageList from "./messages/Messages";
+import Friends from "./friends/Friends"
 import TaskForm from "./tasks/TaskForm";
 import TaskEditForm from "./tasks/TaskEditForm";
 import Welcome from "./welcome/welcome";
@@ -247,6 +248,14 @@ class ApplicationViews extends Component {
             }
           }}
         />
+
+        <Route exact path="/friends" render={ props => {
+          if (this.isAuthenticated()) {
+            return <Friends {...props} friends={this.state.friends} users={this.state.users} />
+          } else {
+            return <Redirect to="/welcome" />
+          }
+        }} />
 
         <Route
           exact
