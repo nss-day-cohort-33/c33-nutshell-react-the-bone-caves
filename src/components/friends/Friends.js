@@ -36,7 +36,7 @@ createEvents = arr => {
         <h1>Friends</h1>
         <section className="friends">
         {
-          this.showFriends(this.props.friends).map( user => <FriendCard key={user.id} user={user} {...this.props}/>)
+          this.showFriends(this.props.friends).map( user => <FriendCard key={user.id} user={user} friends={this.props.friends} {...this.props} deleteFriend={this.props.deleteFriend} />)
         }
         </section>
       </React.Fragment>

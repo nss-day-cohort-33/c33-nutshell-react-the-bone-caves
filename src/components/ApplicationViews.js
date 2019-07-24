@@ -139,6 +139,16 @@ class ApplicationViews extends Component {
       })
   }
 
+  deleteFriend = id => {
+    FriendHandler.delete(id)
+    .then(() => FriendHandler.getAll())
+      .then( friends => {
+        let sortFriends = this.sortFriend(friends);
+        this.setState({ friends: sortFriends });
+        this.props.history.push("/friends")
+      })
+  }
+
   updateEvent = editEvent => {
     EventHandler.put(editEvent)
     .then(() => EventHandler.get("?_expand=user"))
@@ -251,7 +261,7 @@ class ApplicationViews extends Component {
 
         <Route exact path="/friends" render={ props => {
           if (this.isAuthenticated()) {
-            return <Friends {...props} friends={this.state.friends} users={this.state.users} />
+            return <Friends {...props} friends={this.state.friends} users={this.state.users} deleteFriend={this.deleteFriend} />
           } else {
             return <Redirect to="/welcome" />
           }
@@ -290,14 +300,6 @@ class ApplicationViews extends Component {
                 updateArticle={this.updateArticle}
               />
             );
-          }}
-        />
-
-        <Route
-          path="/friends"
-          render={props => {
-            // Remove null and return the component which will show list of friends
-            return null;
           }}
         />
 
