@@ -5,6 +5,7 @@ import "./Task.css"
 
 
 export default class Task extends Component {
+    user = +sessionStorage.getItem("userId");
     render() {
         return (
             <div>
@@ -18,7 +19,9 @@ export default class Task extends Component {
                 </div>
 
                 <section className="tasks">
+
                         {
+
                             this.props.tasks.map(task =>
                                 <TaskCard key={task.id} task={task} {...this.props} updateTask={this.updateTask}/>
                             )
