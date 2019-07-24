@@ -133,7 +133,7 @@ class ApplicationViews extends Component {
       .then(events => {
         let sortEvents = this.sortEvent(events);
         this.setState({ events: sortEvents });
-        this.props.history.goBack();
+        this.props.history.push("/events");;
       });
   };
 
@@ -143,7 +143,7 @@ class ApplicationViews extends Component {
       .then(events => {
         let sortEvents = this.sortEvent(events);
         this.setState({ events: sortEvents });
-        this.props.history.goBack();
+        this.props.history.push("/events");;
       });
   };
 

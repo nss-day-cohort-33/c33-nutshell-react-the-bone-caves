@@ -18,13 +18,13 @@ isUser = () => this.state.userId === +sessionStorage.getItem("userId");
   render() {
     return (
         <div key={this.state.id} className={this.isUser() ? "event-card user-event" : "event-card friend-event"}>
-          <h3>{this.state.event_name}</h3>
+          <h3 className="event-name">{this.state.event_name}</h3>
           {
             !this.isUser() ? <h6>Created By: {this.state.user.username}</h6> : <h6>You created this event.</h6>
           }
-          <p><b>Day</b>: {this.state.date}</p>
-          <p><b>Time</b>: {this.state.time}</p>
-          <p><b>Location</b>: {this.state.locations}</p>
+          <p className="event-date"><b>Day</b>: {this.state.date}</p>
+          <p className="event-time"><b>Time</b>: {this.state.time}</p>
+          <p className="event-location"><b>Location</b>: {this.state.locations}</p>
           <button
             id={`editEvent-${this.state.id}`}
             className="btn btn-warning"

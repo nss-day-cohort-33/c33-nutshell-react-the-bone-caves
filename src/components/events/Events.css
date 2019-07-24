@@ -2,6 +2,19 @@
   background-color: cornsilk;
   margin-bottom: 15px
 }
+
 .friend-event {
   background-color: #EDF0F0;
+}
+
+div.event-card:nth-child(1) {
+  margin: 20px;
+  padding: 20px;
+}
+
+div.event-card:nth-child(1) > h3.event-name {
+  font-weight: 800;
+}
+div.event-card:nth-child(1) > p {
+  font-weight: bold;
 }
