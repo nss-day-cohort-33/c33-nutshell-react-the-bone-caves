@@ -126,7 +126,7 @@ sortEvent = arr => {
       .then( events => {
         let sortEvents = this.sortEvent(events)
         this.setState({ events: sortEvents })
-        this.props.history.push('/events')
+        this.props.history.push("/events")
       })
   }
 
@@ -136,7 +136,7 @@ sortEvent = arr => {
       .then( events => {
         let sortEvents = this.sortEvent(events)
         this.setState({ events: sortEvents })
-        this.props.history.push('/events')
+        this.props.history.push("/events")
       })
   }
 
@@ -146,7 +146,7 @@ sortEvent = arr => {
     .then( events => {
       let sortEvents = this.sortEvent(events)
       this.setState({ events: sortEvents })
-      this.props.history.push('/events')
+      this.props.history.push("/events")
   })
   }
 
@@ -229,6 +229,7 @@ sortEvent = arr => {
           render={props => {
             if (this.isAuthenticated()){
             return <DashboardList  {...props}
+            state={this.state}
             articles={this.state.articles}
             deleteArticle={this.deleteArticle}
             updateArticle={this.updateArticle}
@@ -254,7 +255,8 @@ sortEvent = arr => {
             if (this.isAuthenticated()){
             return <ArticleList  {...props}
             articles={this.state.articles}
-            deleteArticle={this.deleteArticle} />;
+            deleteArticle={this.deleteArticle} 
+            friends={this.state.friends} />;
             }
             else {
               return <Redirect to="/welcome" />;

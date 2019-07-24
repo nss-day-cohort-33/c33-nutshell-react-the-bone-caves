@@ -3,14 +3,15 @@ import ArticleList from "../articles/Articles";
 import Events from "../events/Events";
 import MessageList from "../messages/Messages";
 import Task from "../tasks/Task";
-import NavBar from '../nav/NavBar'
 
 class DashboardList extends Component {
   render() {
     return (
       <React.Fragment>
-        <ArticleList {...this.props} />
-        <Events {...this.props}/>
+        <ArticleList {...this.props} 
+        friends={this.props.state.friends}/>
+        <Events {...this.props}
+        friends={this.props.state.friends}/>
         <MessageList {...this.props}/>
         <Task {...this.props}/>
       </React.Fragment>

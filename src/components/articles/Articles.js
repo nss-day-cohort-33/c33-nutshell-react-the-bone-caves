@@ -6,6 +6,35 @@ export default class ArticleList extends Component {
         saveDisabled: false
     }
 
+    showFriends = arr => {
+        let id = +sessionStorage.getItem("userId")
+        let friendArr = []
+        arr.forEach( friend => {
+          for (let foo of Object.entries(friend)) {
+            let key = foo[0]
+            let splitKey = key.split("_")
+            if (splitKey[0] === "userId" && foo[1] !== id) {
+              friendArr.push(foo[1])
+            }
+          }
+        })
+        friendArr.push(id)
+        let stateArr = this.createArticles(friendArr)
+        return stateArr
+      }
+    
+    createArticles = arr => {
+      let articleArr = []
+      this.props.articles.forEach( article => {
+        arr.forEach( user => {
+          if (article.userId === user) {
+            articleArr.push(article)
+          }
+        })
+      })
+      return articleArr
+    }
+
     render () {
         return (
         <React.Fragment>
@@ -20,7 +49,7 @@ export default class ArticleList extends Component {
             </div>
             <section className="articles">
                 {
-                    this.props.articles.map(article => 
+                    this.showFriends(this.props.friends).map(article => 
                         <div key ={article.id} className={article.userId === +sessionStorage.getItem("userId") ? "article-card user-article" : "article-card friend-article"}>
                             <div className="card-body">
                                 <div className="card-title">
