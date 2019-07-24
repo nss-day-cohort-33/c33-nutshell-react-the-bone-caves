@@ -282,7 +282,7 @@ sortEvent = arr => {
           render={props => {
 
             if (this.isAuthenticated()){
-              return <Events events={this.state.events} sortEvents={this.sortEvents} {...props} deleteEvent={this.deleteEvent} updateEvennt={this.updateEvent} friends={this.state.friends} users={this.state.users} />;
+              return <Events events={this.state.events} sortEvents={this.sortEvents} {...props} deleteEvent={this.deleteEvent} updateEvennt={this.updateEvent} friends={this.state.friends} />;
               }
               else {
                 return <Redirect to="/welcome" />;

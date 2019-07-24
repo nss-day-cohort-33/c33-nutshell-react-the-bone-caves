@@ -49,17 +49,6 @@ createEvents = arr => {
         <section className="events">
           {
             this.showFriends(this.props.friends).map( event => <EventCard key={event.id} event={event} deleteEvent={this.props.deleteEvent} updateEvent={this.props.updateEvent} {...this.props} />)
-            //this.state.events.map( user => {
-              //this.props.events.forEach( event => {
-               // if (event.userId === user) {
-               //   return <EventCard key={event.id} event={event} deleteEvent={this.props.deleteEvent} updateEvent={this.props.updateEvent} {...this.props} />
-               // }
-             // })
-           // })
-
-            //this.props.events.map(event => {
-             // return <EventCard key={event.id} event={event} deleteEvent={this.props.deleteEvent} updateEvent={this.props.updateEvent} {...this.props} />
-           // })
           }
         </section>
       </React.Fragment>
