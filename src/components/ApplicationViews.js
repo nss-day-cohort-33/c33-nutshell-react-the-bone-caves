@@ -33,11 +33,11 @@ class ApplicationViews extends Component {
       .then(users => this.setState({ users: users }))
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortResource(articles)
+        let sortArticles = this.sortArticle(articles)
         this.setState({ articles: sortArticles })})
       .then(() => EventHandler.getAll())
       .then(events => {
-        let sortEvents = this.sortResource(events)
+        let sortEvents = this.sortEvent(events)
         this.setState({ events: sortEvents })
       })
       .then(() => TaskHandler.getAll())
@@ -64,15 +64,19 @@ class ApplicationViews extends Component {
         tasks: tasks
       })
     })
-sortResource = arr => {
+sortArticle = arr => {
 return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
 }
+
+sortEvent = arr => {
+  return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
+  }
 
   addArticle = article =>
     ArticleHandler.post(article)
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortResource(articles)
+        let sortArticles = this.sortArticle(articles)
         this.setState({
           articles: sortArticles
         })}
@@ -103,7 +107,7 @@ return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
     EventHandler.post(event)
       .then(() => EventHandler.getAll())
       .then( events => {
-        let sortEvents = this.sortResource(events)
+        let sortEvents = this.sortEvent(events)
         this.setState({ events: sortEvents })
         this.props.history.push('/events')
       })
@@ -114,7 +118,7 @@ return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
     .then(() => EventHandler.getAll())
     .then(() => EventHandler.getAll())
       .then( events => {
-        let sortEvents = this.sortResource(events)
+        let sortEvents = this.sortEvent(events)
         this.setState({ events: sortEvents })
         this.props.history.push('/events')
       })
@@ -124,7 +128,7 @@ return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
     EventHandler.put(editEvent)
     .then(() => EventHandler.getAll())
     .then( events => {
-      let sortEvents = this.sortResource(events)
+      let sortEvents = this.sortEvent(events)
       this.setState({ events: sortEvents })
       this.props.history.push('/events')
   })
@@ -134,7 +138,7 @@ return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
     return ArticleHandler.put(article)
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-          let sortArticles = this.sortResource(articles)
+          let sortArticles = this.sortArticle(articles)
           this.setState({
           articles: sortArticles
           })
@@ -144,7 +148,7 @@ return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
   deleteArticle = id => ArticleHandler.delete(id)
   .then(() => ArticleHandler.getAll())
   .then(articles => {
-      let sortArticles = this.sortResource(articles)
+      let sortArticles = this.sortArticle(articles)
       this.setState({
         articles: sortArticles
       })
