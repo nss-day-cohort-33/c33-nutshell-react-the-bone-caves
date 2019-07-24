@@ -133,6 +133,14 @@ sortEvent = arr => {
     });
   };
 
+  editMessage = object => {
+    MessageHandler.put(object)
+    .then(messages => {
+      let newMessages = messages.sort((a, b) => a.timestamp - b.timestamp);
+      this.setState({ messages: newMessages });
+    })
+  }
+
   addEvent = event => {
     EventHandler.post(event)
       .then(() => EventHandler.get("?_expand=user"))
@@ -316,6 +324,7 @@ sortEvent = arr => {
                   users={this.state.users}
                   addMessage={this.addMessage}
                   deleteMessage={this.deleteMessage}
+                  editMessage={this.editMessage}
                   {...props}
                 />
               );
