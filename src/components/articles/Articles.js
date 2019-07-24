@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 
 export default class ArticleList extends Component {
+    state = {
+        saveDisabled: false
+    }
     render () {
         return (
         <React.Fragment>
@@ -22,6 +25,24 @@ export default class ArticleList extends Component {
                                 <h6>{article.title}</h6>
                                 <p>{article.url}</p>
                                 <p>{article.synopsis}</p>
+                                <button
+                                    type="button"
+                                    className="btn btn-success"
+                                    onClick={() => {
+                                        this.props.history.push(`/articles/${article.id}/edit`);
+                                    }}
+                                    >
+                                    Edit
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={
+                                        () => {this.setState({ saveDisabled: true },
+                                        () => this.props.deleteArticle(article.id),
+                                        )
+                                    }
+                                }>Delete</button>
                                 </div>
                             </div>
                         </div>
