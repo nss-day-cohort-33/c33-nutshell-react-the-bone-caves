@@ -121,7 +121,7 @@ sortEvent = arr => {
 
   addEvent = event =>{
     EventHandler.post(event)
-      .then(() => EventHandler.getAll())
+      .then(() => EventHandler.get("?_expand=user"))
       .then( events => {
         let sortEvents = this.sortEvent(events)
         this.setState({ events: sortEvents })
@@ -131,8 +131,7 @@ sortEvent = arr => {
 
   deleteEvent = id => {
     EventHandler.delete(id)
-    .then(() => EventHandler.getAll())
-    .then(() => EventHandler.getAll())
+    .then(() => EventHandler.get("?_expand=user"))
       .then( events => {
         let sortEvents = this.sortEvent(events)
         this.setState({ events: sortEvents })
@@ -142,7 +141,7 @@ sortEvent = arr => {
 
   updateEvent = editEvent => {
     EventHandler.put(editEvent)
-    .then(() => EventHandler.getAll())
+    .then(() => EventHandler.get("?_expand=user"))
     .then( events => {
       let sortEvents = this.sortEvent(events)
       this.setState({ events: sortEvents })
