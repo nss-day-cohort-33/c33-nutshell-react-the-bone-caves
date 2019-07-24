@@ -35,7 +35,7 @@ getRelationshipId = arr => {
             }}
             disabled={this.state.saveDisabled}
           >
-            Delete Event
+            Remove Friend
           </button>
         </div>
 
