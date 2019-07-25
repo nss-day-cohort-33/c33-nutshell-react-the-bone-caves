@@ -1,63 +1,78 @@
 import React, { Component } from "react";
 
 export default class SearchCard extends Component {
-  // sortFriend = (arr, id) => {
-  //   let currUser = +sessionStorage.getItem("userId");
-  //   let friendArr = arr.filter(friend => {
-  //     if (friend.userId_1 === currUser || friend.userId_2 === currUser) {
-  //       return friend;
-  //     }
-  //   });
-  //   return this.showFriends(friendArr, id);
-  // };
+  state = {
+    buttonDisabled: false
+  };
 
-  // showFriends = (arr, id) => {
-  //   let currUser = +sessionStorage.getItem("userId");
-  //   let friendArr = [];
-  //   arr.forEach(friend => {
-  //     for (let foo of Object.entries(friend)) {
-  //       let key = foo[0];
-  //       let splitKey = key.split("_");
-  //       if (splitKey[0] === "userId" && foo[1] !== currUser) {
-  //         friendArr.push(foo[1]);
-  //       }
-  //     }
-  //   });
-  //   friendArr.push(currUser)
-  //   return this.addButtons(friendArr, id);
-  // };
+  checkFriends = (currentUser, id) => {
+    let yesOrNo = true;
+    this.props.friends.forEach(conection => {
+      if (
+        (currentUser === conection.userId_1 ||
+          currentUser === conection.userId_2) &&
+        (id === conection.userId_1 || id === conection.userId_2)
+      ) {
+        yesOrNo = false;
+      }
+    });
+    return yesOrNo;
+  };
 
-  // addButtons = (arr, id) => {
-  //   let newArr = arr.filter( userId => {
-  //     if (userId === id) {
-  //       return id
-  //     }
-  //   });
-  //   return newArr
-  // };
+  addNewFriend = id => {
+    console.log("clicked");
+    let currentUser = +sessionStorage.getItem("userId");
+    let friendObject = {
+      userId_1: currentUser,
+      userId_2: id
+    };
+    this.props.addFriend(friendObject);
+    alert(`${this.props.user.username} successfully added!`);
+  };
 
-  // createEvents = arr => {
-  //   let eventArr = [];
-  //   this.props.events.forEach(event => {
-  //     arr.forEach(user => {
-  //       if (event.userId === user) {
-  //         eventArr.push(event);
-  //       }
-  //     });
-  //   });
-  //   return eventArr;
-  // };
   render() {
     return (
-      <li key={this.props.user.id} className="user-card">
-        <p>Username: {this.props.user.username}</p>
-        <p>Email: {this.props.user.email}</p>
-        <button
-          type="button"
-        >
-          Add User
-        </button>
-      </li>
+      <div
+        key={this.props.user.id}
+        className={
+          this.checkFriends(
+            +sessionStorage.getItem("userId"),
+            this.props.user.id
+          )
+            ? "user-card search-card"
+            : "user-friend search-card"
+        }
+      >
+        <div>
+          <div className="search-title">
+            <p>
+              <b>Username:</b> {this.props.user.username}
+            </p>
+            <p>
+              <b>Email:</b> {this.props.user.email}
+            </p>
+            <button
+              className="btn btn-success"
+              type="button"
+              style={{
+                display: this.checkFriends(
+                  +sessionStorage.getItem("userId"),
+                  this.props.user.id
+                )
+                  ? ""
+                  : "none"
+              }}
+              onClick={() => {
+                this.setState({ buttonDisabled: true });
+                this.addNewFriend(this.props.user.id);
+              }}
+              disabled={this.state.buttonDisabled}
+            >
+              Add User
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 }
