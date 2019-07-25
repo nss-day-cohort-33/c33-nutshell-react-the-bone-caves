@@ -9,6 +9,17 @@ state = {
   friends: this.props.friends,
   saveDisabled: false
 }
+
+sortFriend = arr => {
+  let id = +sessionStorage.getItem("userId");
+  let friendArr = arr.filter(friend => {
+    if (friend.userId_1 === id || friend.userId_2 === id) {
+      return friend;
+    }
+  });
+  this.getRelationshipId(friendArr)
+};
+
 getRelationshipId = arr => {
   arr.forEach( friendShip => {
     if (friendShip.userId_1 === this.state.id || friendShip.userId_2 === this.state.id) {
@@ -31,7 +42,7 @@ getRelationshipId = arr => {
             className="btn btn-danger"
             onClick={() => {
               this.setState({saveDisabled: true})
-              this.getRelationshipId(this.state.friends)
+              this.sortFriend(this.state.friends)
             }}
             disabled={this.state.saveDisabled}
           >

@@ -133,8 +133,7 @@ class ApplicationViews extends Component {
     FriendHandler.delete(id)
       .then(() => FriendHandler.getAll())
       .then(friends => {
-        let sortFriends = this.sortFriend(friends);
-        this.setState({ friends: sortFriends });
+        this.setState({ friends: friends });
         this.props.history.push("/friends");
       });
   };
@@ -256,7 +255,7 @@ class ApplicationViews extends Component {
           path="/search"
           render={props => {
             if (this.isAuthenticated()) {
-              return <SearchList results={this.props.results} />;
+              return <SearchList friends={this.state.friends} results={this.props.results} />;
             } else {
               return <Redirect to="/welcome" />;
             }
