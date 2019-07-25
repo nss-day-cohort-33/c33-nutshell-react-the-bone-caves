@@ -29,13 +29,13 @@ export default class MessageCard extends Component {
         (id === conection.userId_1 || id === conection.userId_2)
       ) {
         yesOrNo = false;
+        alert(`you are already friends with ${this.props.message.username}`)
       }
     });
     return yesOrNo;
   };
 
   addNewFriend = id => {
-    console.log("clicked");
     let currentUser = +sessionStorage.getItem("userId");
 
     if (id !== currentUser && this.checkFriends(currentUser, id)) {
@@ -43,7 +43,12 @@ export default class MessageCard extends Component {
         userId_1: +sessionStorage.getItem("userId"),
         userId_2: id
       };
-      this.props.addFriend(friendObject);
+
+        if(window.confirm(`are you sure you want to add ${this.props.message.username} to friends`)){
+          this.props.addFriend(friendObject);
+          alert(`${this.props.message.username} was added as a friend`)
+        }
+
     }
   };
   isUser = props => {
@@ -55,13 +60,12 @@ export default class MessageCard extends Component {
         >
           {this.props.message.message}
         </EditableLabel>
-        <a
-          href="javascript:void(0)x"
+        <button
           onClick={() => this.props.deleteMessage(this.props.message.id)}
-          className="card-link"
+          className="btn btn-primary"
         >
           Delete
-        </a>
+        </button>
       </React.Fragment>
     );
   };
@@ -81,6 +85,7 @@ export default class MessageCard extends Component {
   };
 
   render() {
+
     return (
       <div key={this.props.message.id} className="card">
         <div className="card-body">
