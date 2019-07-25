@@ -8,7 +8,6 @@ export default class MessageCard extends Component {
     this._handleFocusOut = this._handleFocusOut.bind(this);
   }
 
-
   _handleFocusOut(text) {
     console.log(text);
     let newMessage = {
@@ -22,49 +21,74 @@ export default class MessageCard extends Component {
   }
 
   checkFriends = (currentUser, id) => {
-    let yesOrNo = true
+    let yesOrNo = true;
     this.props.friends.forEach(conection => {
-      if((currentUser === conection.userId_1 ||currentUser === conection.userId_2 )&&(id === conection.userId_1 ||id === conection.userId_2)){
-        console.log("here")
-        yesOrNo = false
+      if (
+        (currentUser === conection.userId_1 ||
+          currentUser === conection.userId_2) &&
+        (id === conection.userId_1 || id === conection.userId_2)
+      ) {
+        yesOrNo = false;
       }
-    })
-    return yesOrNo
-  }
+    });
+    return yesOrNo;
+  };
 
-  addNewFriend = (id) => {
-    console.log("clicked")
-    let currentUser = +sessionStorage.getItem("userId")
-    console.log(this.checkFriends(currentUser, id))
+  addNewFriend = id => {
+    console.log("clicked");
+    let currentUser = +sessionStorage.getItem("userId");
 
-    if(id !== currentUser && this.checkFriends(currentUser, id) ){
+    if (id !== currentUser && this.checkFriends(currentUser, id)) {
       let friendObject = {
         userId_1: +sessionStorage.getItem("userId"),
         userId_2: id
-      }
-      this.props.addFriend(friendObject)
+      };
+      this.props.addFriend(friendObject);
     }
-  }
+  };
+  isUser = props => {
+    return (
+      <React.Fragment>
+        <EditableLabel
+          text={this.props.message.message}
+          onFocusOut={this._handleFocusOut}
+        >
+          {this.props.message.message}
+        </EditableLabel>
+        <a
+          href="javascript:void(0)x"
+          onClick={() => this.props.deleteMessage(this.props.message.id)}
+          className="card-link"
+        >
+          Delete
+        </a>
+      </React.Fragment>
+    );
+  };
+
+  IsNotUser = props => {
+    return <label>{this.props.message.message}</label>;
+  };
+
+  CheckEdit = props => {
+    let id = props.id;
+    let currentUser = +sessionStorage.getItem("userId");
+    if (currentUser === id) {
+      return <this.isUser />;
+    } else {
+      return <this.IsNotUser />;
+    }
+  };
 
   render() {
     return (
       <div key={this.props.message.id} className="card">
         <div className="card-body">
           <div className="card-title">
-            <h5 onClick={() => this.addNewFriend(this.props.message.userId) } >{this.props.message.username}</h5>
-            <EditableLabel
-              text={this.props.message.message}
-              onFocusOut={this._handleFocusOut}
-            >
-              {this.props.message.message}
-            </EditableLabel>
-            <a
-              href="javascript:void(0)x"
-              onClick={() => this.props.deleteMessage(this.props.message.id)}
-              className="card-link"
-            >
-              Delete
-            </a>
+            <h5 onClick={() => this.addNewFriend(this.props.message.userId)}>
+              {this.props.message.username}
+            </h5>
+            <this.CheckEdit id={this.props.message.userId} />
           </div>
         </div>
       </div>
