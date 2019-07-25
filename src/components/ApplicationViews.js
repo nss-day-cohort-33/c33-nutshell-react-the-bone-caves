@@ -261,6 +261,12 @@ class ApplicationViews extends Component {
               return (
                 <DashboardList
                   {...props}
+                  users={this.state.users}
+                  addMessage={this.addMessage}
+                  deleteMessage={this.deleteMessage}
+                  friends={this.state.friends}
+                  addFriend={this.addFriend}
+                  editMessage={this.editMessage}
                   state={this.state}
                   articles={this.state.articles}
                   deleteArticle={this.deleteArticle}
