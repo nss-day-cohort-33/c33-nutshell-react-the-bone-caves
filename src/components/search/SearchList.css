@@ -1,0 +1,21 @@
+.user-section {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.search-card {
+  width: 10rem;
+  background-color: #EDF0F0;
+}
+
+.search-title {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.user-friend {
+  background-color: cornsilk;
+}

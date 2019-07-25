@@ -157,7 +157,6 @@ class ApplicationViews extends Component {
     FriendHandler.post(object)
     .then(friends => {
       this.setState({friends: friends})})
-
   }
 
   deleteFriend = id => {
@@ -286,7 +285,7 @@ class ApplicationViews extends Component {
           path="/search"
           render={props => {
             if (this.isAuthenticated()) {
-              return <SearchList results={this.props.results} />;
+              return <SearchList friends={this.state.friends} addFriend={this.addFriend} results={this.props.results} />;
             } else {
               return <Redirect to="/welcome" />;
             }
