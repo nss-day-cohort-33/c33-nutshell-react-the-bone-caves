@@ -37,8 +37,7 @@ class ApplicationViews extends Component {
       .then(users => this.setState({ users: users }))
       .then(() => FriendHandler.getAll())
       .then(friends => {
-        let sortFriends = this.sortFriend(friends);
-        this.setState({ friends: sortFriends });
+        this.setState({ friends: friends });
       })
       .then(() => ArticleHandler.getAll())
       .then(articles => {
@@ -64,15 +63,7 @@ class ApplicationViews extends Component {
       });
   };
 
-  sortFriend = arr => {
-    let id = +sessionStorage.getItem("userId");
-    let friendArr = arr.filter(friend => {
-      if (friend.userId_1 === id || friend.userId_2 === id) {
-        return friend;
-      }
-    });
-    return friendArr;
-  };
+
 
   // put functions
   updateTask = task =>
