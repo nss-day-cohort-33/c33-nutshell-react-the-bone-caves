@@ -6,6 +6,10 @@
     background-color: #EDF0F0;
 }
 
+.card-body{
+    border: 1px solid lightblue
+}
+
 .articleButton {
     display: flex;
     justify-content: space-evenly;
@@ -15,3 +19,4 @@
 body {
     background-color: lightblue;
   }
+
