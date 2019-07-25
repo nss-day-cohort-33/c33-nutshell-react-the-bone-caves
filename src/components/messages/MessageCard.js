@@ -21,8 +21,23 @@ export default class MessageCard extends Component {
     this.props.editMessage(newMessage);
   }
 
+  checkFriends = (currentUser, id) => {
+    let yesOrNo = true
+    this.props.friends.forEach(conection => {
+      if((currentUser === conection.userId_1 ||currentUser === conection.userId_2 )&&(id === conection.userId_1 ||id === conection.userId_2)){
+        console.log("here")
+        yesOrNo = false
+      }
+    })
+    return yesOrNo
+  }
+
   addNewFriend = (id) => {
-    if(id !== +sessionStorage.getItem("userId")){
+    console.log("clicked")
+    let currentUser = +sessionStorage.getItem("userId")
+    console.log(this.checkFriends(currentUser, id))
+
+    if(id !== currentUser && this.checkFriends(currentUser, id) ){
       let friendObject = {
         userId_1: +sessionStorage.getItem("userId"),
         userId_2: id
@@ -36,7 +51,7 @@ export default class MessageCard extends Component {
       <div key={this.props.message.id} className="card">
         <div className="card-body">
           <div className="card-title">
-            <h5 onClick={() => this.addNewFriend(this.props.message.id) } >{this.props.message.username}</h5>
+            <h5 onClick={() => this.addNewFriend(this.props.message.userId) } >{this.props.message.username}</h5>
             <EditableLabel
               text={this.props.message.message}
               onFocusOut={this._handleFocusOut}
