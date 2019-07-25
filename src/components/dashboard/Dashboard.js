@@ -10,9 +10,12 @@ class DashboardList extends Component {
       <React.Fragment>
         <ArticleDash {...this.props}
         friends={this.props.state.friends}/>
+        <br></br>
         <EventDash {...this.props}
         friends={this.props.state.friends}/>
+        <br></br>
         <MessageList {...this.props}/>
+        <br></br>
         <TaskDash {...this.props}/>
       </React.Fragment>
     );

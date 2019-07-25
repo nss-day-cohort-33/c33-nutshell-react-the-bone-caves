@@ -45,6 +45,7 @@ export default class ArticleList extends Component {
     render () {
         return (
         <React.Fragment>
+            <h1 className="articleTitle">Articles</h1>
             <div className="articleButton">
                 <button type="button"
                     className="btn btn-success"
