@@ -6,6 +6,17 @@ export default class ArticleDash extends Component {
         saveDisabled: false
     }
 
+    sortFriend = arr => {
+      let id = +sessionStorage.getItem("userId");
+      let friendArr = arr.filter(friend => {
+        if (friend.userId_1 === id || friend.userId_2 === id) {
+          return friend;
+        }
+      });
+      let newArr = this.showFriends(friendArr)
+      return newArr
+    };
+
     showFriends = arr => {
         let id = +sessionStorage.getItem("userId")
         let friendArr = []
@@ -22,7 +33,7 @@ export default class ArticleDash extends Component {
         let stateArr = this.createArticles(friendArr)
         return stateArr
       }
-    
+
     createArticles = arr => {
       let articleArr = []
       this.props.articles.forEach( article => {
@@ -41,7 +52,7 @@ export default class ArticleDash extends Component {
             <h4>Articles:</h4>
             <section className="articles">
                 {
-                    this.showFriends(this.props.friends).map(article => 
+                    this.sortFriend(this.props.friends).map(article =>
                         <div key ={article.id} className={article.userId === +sessionStorage.getItem("userId") ? "article-card user-article" : "article-card friend-article"}>
                             <div className="card-body">
                                 <div className="card-title">
@@ -56,6 +67,6 @@ export default class ArticleDash extends Component {
                 }
             </section>
             </React.Fragment>
-        ) 
+        )
     }
 }
