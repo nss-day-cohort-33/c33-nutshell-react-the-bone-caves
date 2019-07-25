@@ -39,12 +39,12 @@ export default class SearchCard extends Component {
             +sessionStorage.getItem("userId"),
             this.props.user.id
           )
-            ? "user-card card"
-            : "user-friend card"
+            ? "user-card search-card"
+            : "user-friend search-card"
         }
       >
-        <div className="card-body">
-          <div className="card-title">
+        <div>
+          <div className="search-title">
             <p>
               <b>Username:</b> {this.props.user.username}
             </p>

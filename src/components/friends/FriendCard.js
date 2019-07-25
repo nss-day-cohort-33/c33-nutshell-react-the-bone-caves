@@ -6,7 +6,6 @@ state = {
   id: this.props.user.id,
   username: this.props.user.username,
   email: this.props.user.email,
-  friends: this.props.friends,
   saveDisabled: false
 }
 
@@ -38,7 +37,7 @@ getRelationshipId = arr => {
             className="btn btn-danger"
             onClick={() => {
               this.setState({saveDisabled: true})
-              this.sortFriend(this.state.friends)
+              this.sortFriend(this.props.friends)
             }}
             disabled={this.state.saveDisabled}
           >
