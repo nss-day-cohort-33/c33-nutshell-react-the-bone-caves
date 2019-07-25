@@ -16,8 +16,9 @@ export default class TaskDash extends Component {
     render() {
         return (
             <React.Fragment>
+            <div className="card">
             <section className="tasks">
-            <h1>Task List</h1>
+            <h4>Task List</h4>
                 {
 
                     this.createTasks(this.props.friends).map(task =>
@@ -33,6 +34,7 @@ export default class TaskDash extends Component {
                         )
                 }
             </section>
+            </div>
             </React.Fragment>
         )
     }
