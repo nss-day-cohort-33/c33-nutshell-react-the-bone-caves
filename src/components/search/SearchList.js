@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import SearchCard from "./SearchCard";
+import './SearchList.css'
+
 
 export default class SearchList extends Component {
   sortResults = (arr1, arr2) => {
@@ -22,15 +24,19 @@ export default class SearchList extends Component {
       <React.Fragment>
         <h1>Search Results</h1>
         {this.props.results.userResults.length > 0 ? (
-          <ul>
-            <h3>Users</h3>{" "}
-            {this.sortResults(
-              this.props.results.userResults,
-              this.props.results.emailResults
-            ).map(user => (
-              <SearchCard key={user.id} user={user} friends={this.props.friends} />
-            ))}
-          </ul>
+          <React.Fragment>
+            <h3>Users</h3>
+            <section className="user-section">
+              {this.sortResults(
+                this.props.results.userResults,
+                this.props.results.emailResults
+              ).map(user => {
+                if (user.id !== +sessionStorage.getItem("userId")) {
+                  return <SearchCard key={user.id} user={user} friends={this.props.friends} addFriend={this.props.addFriend} />
+                }
+              })}
+            </section>
+          </React.Fragment>
         ) : (
           <h3>User not found.</h3>
         )}
