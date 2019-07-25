@@ -35,7 +35,6 @@ export default class MessageCard extends Component {
   };
 
   addNewFriend = id => {
-    console.log("clicked");
     let currentUser = +sessionStorage.getItem("userId");
 
     if (id !== currentUser && this.checkFriends(currentUser, id)) {
@@ -43,7 +42,9 @@ export default class MessageCard extends Component {
         userId_1: +sessionStorage.getItem("userId"),
         userId_2: id
       };
-      this.props.addFriend(friendObject);
+
+        this.props.addFriend(friendObject);
+        alert(`${this.props.message.username} was added as a friend`)
     }
   };
   isUser = props => {
@@ -81,6 +82,7 @@ export default class MessageCard extends Component {
   };
 
   render() {
+
     return (
       <div key={this.props.message.id} className="card">
         <div className="card-body">

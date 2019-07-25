@@ -22,7 +22,6 @@ export default class MessageList extends Component {
               message: this.state.message,
               timestamp: Date.now()
           }
-        console.log(newMessage)
         this.props.addMessage(newMessage)
 
 
