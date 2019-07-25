@@ -1,11 +1,10 @@
-
+// Matthew McDevitt
+// this assembles the components for task and have a add task btn
 import React, { Component } from 'react'
 import TaskCard from "./TaskCard"
 import "./Task.css"
-
-
 export default class Task extends Component {
-
+// Filter to make sure that the tasks are the current user
     createTasks = () => {
         let user = +sessionStorage.getItem("userId");
         let taskArr = []
