@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import TaskHandler from "../apiManager/TaskHandler"
+import "./Task.css"
+
 
 
 export default class TaskCard extends Component {
@@ -17,7 +18,7 @@ export default class TaskCard extends Component {
 
         <div className="card-body">
           <input
-
+            className="form-check-input"
             id="iscompleted"
             type="checkbox"
             checked={this.props.task.iscompleted}
@@ -35,7 +36,7 @@ export default class TaskCard extends Component {
           </a>
           <button
             onClick={() => this.props.deleteTask(this.props.task.id)}
-            className="card-link"
+            className="delete-btn"
           >
             Delete
           </button>
