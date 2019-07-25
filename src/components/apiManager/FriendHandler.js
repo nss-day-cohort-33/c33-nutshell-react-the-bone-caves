@@ -19,6 +19,7 @@ delete: {
 post: {
     value: function(newData){
         return ApiHandler.post("friends",newData)
+        .then(this.getAll)
     }
 },
 put: {
