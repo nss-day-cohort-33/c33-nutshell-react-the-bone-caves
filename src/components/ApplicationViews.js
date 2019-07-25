@@ -1,23 +1,24 @@
 import { Route, withRouter, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import Login from "./login/Login"
-import Register from './register/register'
-import FriendHandler from "./apiManager/FriendHandler"
-import UserHandler from "./apiManager/UserHandler"
-import ArticleHandler from "./apiManager/ArticleHandler"
-import EventHandler from "./apiManager/EventHandler"
-import TaskHandler from "./apiManager/TaskHandler"
-import MessageHandler from "./apiManager/MessageHandler"
-import Task from "./tasks/Task"
-import Events from './events/Events'
-import EventForm from './events/EventForm'
-import EditEventForm from './events/EditEventForm'
-import ArticleList from './articles/Articles'
-import ArticleForm from './articles/ArticleForm'
-import ArticleEditForm from './articles/ArticleEditForm'
-import MessageList from "./messages/Messages"
-import TaskForm from "./tasks/TaskForm"
-import TaskEditForm from "./tasks/TaskEditForm"
+import Login from "./login/Login";
+import Register from "./register/register";
+import FriendHandler from "./apiManager/FriendHandler";
+import UserHandler from "./apiManager/UserHandler";
+import ArticleHandler from "./apiManager/ArticleHandler";
+import EventHandler from "./apiManager/EventHandler";
+import TaskHandler from "./apiManager/TaskHandler";
+import MessageHandler from "./apiManager/MessageHandler";
+import Task from "./tasks/Task";
+import Events from "./events/Events";
+import EventForm from "./events/EventForm";
+import EditEventForm from "./events/EditEventForm";
+import ArticleList from "./articles/Articles";
+import ArticleForm from "./articles/ArticleForm";
+import ArticleEditForm from "./articles/ArticleEditForm";
+import MessageList from "./messages/Messages";
+import Friends from "./friends/Friends";
+import TaskForm from "./tasks/TaskForm";
+import TaskEditForm from "./tasks/TaskEditForm";
 import Welcome from "./welcome/welcome";
 import DashboardList from "./dashboard/Dashboard";
 
@@ -36,17 +37,17 @@ class ApplicationViews extends Component {
       .then(users => this.setState({ users: users }))
       .then(() => FriendHandler.getAll())
       .then(friends => {
-        let sortFriends = this.sortFriend(friends)
-        this.setState({ friends: sortFriends })
+        this.setState({ friends: friends });
       })
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortArticle(articles)
-        this.setState({ articles: sortArticles })})
+        let sortArticles = this.sortArticle(articles);
+        this.setState({ articles: sortArticles });
+      })
       .then(() => EventHandler.get("?_expand=user"))
       .then(events => {
-        let sortEvents = this.sortEvent(events)
-        this.setState({ events: sortEvents })
+        let sortEvents = this.sortEvent(events);
+        this.setState({ events: sortEvents });
       })
       .then(() => TaskHandler.getAll())
       .then(tasks => this.setState({ tasks: tasks }))
@@ -61,41 +62,32 @@ class ApplicationViews extends Component {
     TaskHandler.delete(id)
       .then(() => TaskHandler.getAll())
       .then(tasks => {
-        this.setState({ tasks: tasks })
-      })
-  }
-
-  sortFriend = (arr) => {
-    let id = +sessionStorage.getItem("userId")
-    let friendArr = arr.filter( friend=> {
-      if (friend.userId_1 === id ||friend.userId_2 === id) {
-        return friend
-      }
-    })
-    return friendArr
-  }
+        this.setState({ tasks: tasks });
+      });
+  };
 
   // put functions
-  updateTask = task => TaskHandler.put(task)
-    .then(() => TaskHandler.getAll())
-    .then(tasks => {
-      this.setState({
-        tasks: tasks
-      })
-    })
-sortArticle = arr => {
-return  arr.sort((a,b) => Date.parse(b.date) - Date.parse(a.date))
-}
+  updateTask = task =>
+    TaskHandler.put(task)
+      .then(() => TaskHandler.getAll())
+      .then(tasks => {
+        this.setState({
+          tasks: tasks
+        });
+      });
+  sortArticle = arr => {
+    return arr.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+  };
 
-sortEvent = arr => {
-  return  arr.sort((a,b) => Date.parse(a.date) - Date.parse(b.date))
-  }
+  sortEvent = arr => {
+    return arr.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+  };
 
   addArticle = article =>
     ArticleHandler.post(article)
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortArticle(articles)
+        let sortArticles = this.sortArticle(articles);
         this.setState({
           articles: sortArticles
         });
@@ -134,63 +126,73 @@ sortEvent = arr => {
   };
 
   editMessage = object => {
-    MessageHandler.put(object)
-    .then(messages => {
+    MessageHandler.put(object).then(messages => {
       let newMessages = messages.sort((a, b) => a.timestamp - b.timestamp);
       this.setState({ messages: newMessages });
-    })
-  }
+    });
+  };
 
   addEvent = event => {
     EventHandler.post(event)
       .then(() => EventHandler.get("?_expand=user"))
-      .then( events => {
-        let sortEvents = this.sortEvent(events)
-        this.setState({ events: sortEvents })
-        this.props.history.push("/events")
-      })
-  }
+      .then(events => {
+        let sortEvents = this.sortEvent(events);
+        this.setState({ events: sortEvents });
+        this.props.history.push("/events");
+      });
+  };
 
   deleteEvent = id => {
     EventHandler.delete(id)
-    .then(() => EventHandler.get("?_expand=user"))
-      .then( events => {
-        let sortEvents = this.sortEvent(events)
-        this.setState({ events: sortEvents })
-        this.props.history.push("/events")
-      })
-  }
+      .then(() => EventHandler.get("?_expand=user"))
+      .then(events => {
+        let sortEvents = this.sortEvent(events);
+        this.setState({ events: sortEvents });
+        this.props.history.push("/events");
+      });
+  };
+
+  deleteFriend = id => {
+    FriendHandler.delete(id)
+      .then(() => FriendHandler.getAll())
+      .then(friends => {
+        let sortFriends = this.sortFriend(friends);
+        this.setState({ friends: sortFriends });
+        this.props.history.push("/friends");
+      });
+  };
 
   updateEvent = editEvent => {
     EventHandler.put(editEvent)
-    .then(() => EventHandler.get("?_expand=user"))
-    .then( events => {
-      let sortEvents = this.sortEvent(events)
-      this.setState({ events: sortEvents })
-      this.props.history.push("/events")
-  })
-  }
+      .then(() => EventHandler.get("?_expand=user"))
+      .then(events => {
+        let sortEvents = this.sortEvent(events);
+        this.setState({ events: sortEvents });
+        this.props.history.push("/events");
+      });
+  };
 
   updateArticle = article => {
     return ArticleHandler.put(article)
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-          let sortArticles = this.sortArticle(articles)
-          this.setState({
+        let sortArticles = this.sortArticle(articles);
+        this.setState({
           articles: sortArticles
         });
       });
   };
 
-  deleteArticle = id => ArticleHandler.delete(id)
-  .then(() => ArticleHandler.getAll())
-  .then(articles => {
-      let sortArticles = this.sortArticle(articles)
-      this.setState({
-        articles: sortArticles
-      })
-      this.props.history.push("/articles")
-  })
+  deleteArticle = id =>
+    ArticleHandler.delete(id)
+      .then(() => ArticleHandler.getAll())
+      .then(articles => {
+        let sortArticles = this.sortArticle(articles);
+        this.setState({
+          articles: sortArticles
+        });
+        this.props.history.push("/articles");
+      });
 
   isAuthenticated = () => sessionStorage.getItem("userId") !== null;
 
@@ -245,26 +247,47 @@ sortEvent = arr => {
           }}
         />
 
-          <Route
+        <Route
           exact
           path="/"
           render={props => {
-            if (this.isAuthenticated()){
-            return <DashboardList  {...props}
-            state={this.state}
-            articles={this.state.articles}
-            deleteArticle={this.deleteArticle}
-            updateArticle={this.updateArticle}
-            messages={this.state.messages}
-            tasks={this.state.tasks}
-            deleteTask={this.deleteTask}
-            updateTask={this.updateTask}
-            events={this.state.events}
-            deleteEvent={this.deleteEvent}
-            updateEvennt={this.updateEvent}
-            />;
+            if (this.isAuthenticated()) {
+              return (
+                <DashboardList
+                  {...props}
+                  state={this.state}
+                  articles={this.state.articles}
+                  deleteArticle={this.deleteArticle}
+                  updateArticle={this.updateArticle}
+                  messages={this.state.messages}
+                  tasks={this.state.tasks}
+                  deleteTask={this.deleteTask}
+                  updateTask={this.updateTask}
+                  events={this.state.events}
+                  deleteEvent={this.deleteEvent}
+                  updateEvennt={this.updateEvent}
+                />
+              );
+            } else {
+              return <Redirect to="/welcome" />;
             }
-            else {
+          }}
+        />
+
+        <Route
+          exact
+          path="/friends"
+          render={props => {
+            if (this.isAuthenticated()) {
+              return (
+                <Friends
+                  {...props}
+                  friends={this.state.friends}
+                  users={this.state.users}
+                  deleteFriend={this.deleteFriend}
+                />
+              );
+            } else {
               return <Redirect to="/welcome" />;
             }
           }}
@@ -274,13 +297,16 @@ sortEvent = arr => {
           exact
           path="/articles"
           render={props => {
-            if (this.isAuthenticated()){
-            return <ArticleList  {...props}
-            articles={this.state.articles}
-            deleteArticle={this.deleteArticle}
-            friends={this.state.friends} />;
-            }
-            else {
+            if (this.isAuthenticated()) {
+              return (
+                <ArticleList
+                  {...props}
+                  articles={this.state.articles}
+                  deleteArticle={this.deleteArticle}
+                  friends={this.state.friends}
+                />
+              );
+            } else {
               return <Redirect to="/welcome" />;
             }
           }}
@@ -303,14 +329,6 @@ sortEvent = arr => {
                 updateArticle={this.updateArticle}
               />
             );
-          }}
-        />
-
-        <Route
-          path="/friends"
-          render={props => {
-            // Remove null and return the component which will show list of friends
-            return null;
           }}
         />
 
@@ -350,12 +368,12 @@ sortEvent = arr => {
             if (this.isAuthenticated()) {
               return (
                 <Events
-                  friends={this.state.friends}
                   events={this.state.events}
                   sortEvents={this.sortEvents}
                   {...props}
                   deleteEvent={this.deleteEvent}
-                  updateEvennt={this.updateEvent}
+                  updateEvent={this.updateEvent}
+                  friends={this.state.friends}
                 />
               );
             } else {
