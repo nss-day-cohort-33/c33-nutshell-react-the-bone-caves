@@ -30,11 +30,7 @@ export default class SearchList extends Component {
               {this.sortResults(
                 this.props.results.userResults,
                 this.props.results.emailResults
-              ).map(user => {
-                if (user.id !== +sessionStorage.getItem("userId")) {
-                  return <SearchCard key={user.id} user={user} friends={this.props.friends} addFriend={this.props.addFriend} />
-                }
-              })}
+              ).map(user => user.id !== +sessionStorage.getItem("userId") ? <SearchCard key={user.id} user={user} friends={this.props.friends} addFriend={this.props.addFriend} /> : '')}
             </section>
           </React.Fragment>
         ) : (

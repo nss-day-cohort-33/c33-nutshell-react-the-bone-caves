@@ -5,11 +5,7 @@ export default class Friends extends Component {
 
   sortFriend = arr => {
     let id = +sessionStorage.getItem("userId");
-    let friendArr = arr.filter(friend => {
-      if (friend.userId_1 === id || friend.userId_2 === id) {
-        return friend;
-      }
-    });
+    let friendArr = arr.filter(friend => friend.userId_1 === id || friend.userId_2 === id ? friend: '');
     let newArr = this.showFriends(friendArr)
     return newArr
   };

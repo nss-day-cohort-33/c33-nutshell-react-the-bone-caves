@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import TaskHandler from "../apiManager/TaskHandler"
 
 
 export default class TaskCard extends Component {
