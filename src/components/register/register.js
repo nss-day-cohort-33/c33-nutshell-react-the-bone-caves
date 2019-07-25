@@ -21,14 +21,15 @@ export default class Register extends Component {
   // Simplistic handler for login submit
   handleRegister = event => {
     event.preventDefault();
-
+    let temp = ""
     let findUser = this.props.users.find(user => {
       if (
         user.username === this.state.username ||
         user.email === this.state.email
       ) {
-        return user;
+        temp = user;
       }
+      return temp
     });
     if (findUser) {
       console.log("if ",findUser)
