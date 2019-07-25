@@ -12,11 +12,7 @@ state = {
 
 sortFriend = arr => {
   let id = +sessionStorage.getItem("userId");
-  let friendArr = arr.filter(friend => {
-    if (friend.userId_1 === id || friend.userId_2 === id) {
-      return friend;
-    }
-  });
+  let friendArr = arr.filter(friend => friend.userId_1 === id || friend.userId_2 === id ? friend : '');
   this.getRelationshipId(friendArr)
 };
 
