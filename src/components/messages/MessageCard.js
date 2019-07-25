@@ -20,12 +20,23 @@ export default class MessageCard extends Component {
     };
     this.props.editMessage(newMessage);
   }
+
+  addNewFriend = (id) => {
+    if(id !== +sessionStorage.getItem("userId")){
+      let friendObject = {
+        userId_1: +sessionStorage.getItem("userId"),
+        userId_2: id
+      }
+      this.props.addFriend(friendObject)
+    }
+  }
+
   render() {
     return (
       <div key={this.props.message.id} className="card">
         <div className="card-body">
           <div className="card-title">
-            <h5 onClick={() => {console.log("click")}} >{this.props.message.username}</h5>
+            <h5 onClick={() => this.addNewFriend(this.props.message.id) } >{this.props.message.username}</h5>
             <EditableLabel
               text={this.props.message.message}
               onFocusOut={this._handleFocusOut}

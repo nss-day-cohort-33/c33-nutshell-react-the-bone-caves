@@ -152,6 +152,14 @@ class ApplicationViews extends Component {
       });
   };
 
+  addFriend = object => {
+    FriendHandler.post(object)
+    .then(friends => {
+      let sortFriends = this.sortFriend(friends)
+      this.setState({friends: sortFriends})})
+
+  }
+
   deleteFriend = id => {
     FriendHandler.delete(id)
       .then(() => FriendHandler.getAll())
@@ -343,6 +351,7 @@ class ApplicationViews extends Component {
                   addMessage={this.addMessage}
                   deleteMessage={this.deleteMessage}
                   editMessage={this.editMessage}
+                  addFriend={this.addFriend}
                   {...props}
                 />
               );
