@@ -20,7 +20,7 @@ export default class ArticleList extends Component {
             </div>
             <section className="articles">
                 {
-                    this.props.articles.map(article => 
+                    this.props.articles.map(article =>
                         <div key ={article.id} className={article.userId === +sessionStorage.getItem("userId") ? "article-card user-article" : "article-card friend-article"}>
                             <div className="card-body">
                                 <div className="card-title">
