@@ -53,7 +53,10 @@ class ApplicationViews extends Component {
       .then(() => TaskHandler.getAll())
       .then(tasks => this.setState({ tasks: tasks }))
       .then(() => MessageHandler.getAll())
-      .then(messages => this.setState({ messages: messages }));
+      .then(messages => {
+        let newMessages = messages.sort((a, b) => a.timestamp - b.timestamp);
+        this.setState({ messages: newMessages });
+      });
   }
 
   deleteTask = id => {
@@ -109,6 +112,27 @@ class ApplicationViews extends Component {
         })
       );
 
+  deleteMessage = id => {
+    MessageHandler.removeAndList(id).then(messages => {
+      let newMessages = messages.sort((a, b) => a.timestamp - b.timestamp);
+      this.setState({ messages: newMessages });
+    });
+  };
+
+  addMessage = object => {
+    MessageHandler.post(object).then(messages => {
+      let newMessages = messages.sort((a, b) => a.timestamp - b.timestamp);
+      this.setState({ messages: newMessages });
+    });
+  };
+
+  editMessage = object => {
+    MessageHandler.put(object).then(messages => {
+      let newMessages = messages.sort((a, b) => a.timestamp - b.timestamp);
+      this.setState({ messages: newMessages });
+    });
+  };
+
   addEvent = event => {
     EventHandler.post(event)
       .then(() => EventHandler.get("?_expand=user"))
@@ -129,12 +153,18 @@ class ApplicationViews extends Component {
       });
   };
 
+  addFriend = object => {
+    FriendHandler.post(object)
+    .then(friends => {
+      this.setState({friends: friends})})
+
+  }
+
   deleteFriend = id => {
     FriendHandler.delete(id)
       .then(() => FriendHandler.getAll())
       .then(friends => {
-        let sortFriends = this.sortFriend(friends);
-        this.setState({ friends: sortFriends });
+        this.setState({ friends: friends });
         this.props.history.push("/friends");
       });
   };
@@ -325,7 +355,18 @@ class ApplicationViews extends Component {
           path="/messages"
           render={props => {
             if (this.isAuthenticated()) {
-              return <MessageList messages={this.state.messages} {...props} />;
+              return (
+                <MessageList
+                  messages={this.state.messages}
+                  users={this.state.users}
+                  addMessage={this.addMessage}
+                  deleteMessage={this.deleteMessage}
+                  editMessage={this.editMessage}
+                  addFriend={this.addFriend}
+                  friends={this.state.friends}
+                  {...props}
+                />
+              );
             } else {
               return <Redirect to="/welcome" />;
             }

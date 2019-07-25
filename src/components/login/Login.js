@@ -22,14 +22,15 @@ export default class Login extends Component {
   // Simplistic handler for login submit
   handleLogin = event => {
     event.preventDefault();
-
+    let temp = ""
     let findUser = this.props.users.find(user => {
       if (
         user.username === this.state.username &&
         user.password === this.state.password
       ) {
-        return user;
+        temp = user;
       }
+      return temp
     });
     if (findUser) {
       sessionStorage.setItem("userId",findUser.id)
