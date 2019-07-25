@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import './Articles.css'
 
-export default class ArticleList extends Component {
+export default class ArticleDash extends Component {
     state = {
         saveDisabled: false
     }
@@ -48,16 +48,7 @@ export default class ArticleList extends Component {
 
     render () {
         return (
-        <React.Fragment>
-            <div className="articleButton">
-                <button type="button"
-                    className="btn btn-success"
-                    onClick={() => {
-                        this.props.history.push("/articles/new")}
-                    }>
-                Add Article
-                </button>
-            </div>
+            <React.Fragment>
             <section className="articles">
                 {
                     this.sortFriend(this.props.friends).map(article =>
@@ -68,34 +59,13 @@ export default class ArticleList extends Component {
                                 <p>{article.url}</p>
                                 <p>{article.synopsis}</p>
                                 <p>{article.date}</p>
-                                <button
-                                    type="button"
-                                    className="btn btn-success"
-                                    onClick={() => {
-                                        this.props.history.push(`/articles/${article.id}/edit`);
-                                    }}
-                                    style={{display: article.userId === +sessionStorage.getItem("userId")  ? "" : "none"}}
-                                    >
-                                    Edit
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-primary"
-                                    onClick={
-                                        () => {this.setState({ saveDisabled: true },
-                                        () => this.props.deleteArticle(article.id),
-                                        )
-                                    }
-                                }
-                                style={{display: article.userId === +sessionStorage.getItem("userId")  ? "" : "none"}}
-                                >Delete</button>
                                 </div>
                             </div>
                         </div>
                         )
                 }
             </section>
-        </React.Fragment>
+            </React.Fragment>
         )
     }
 }

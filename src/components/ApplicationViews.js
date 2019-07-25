@@ -2,6 +2,7 @@ import { Route, withRouter, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Login from "./login/Login";
 import Register from "./register/register";
+import FriendHandler from "./apiManager/FriendHandler";
 import UserHandler from "./apiManager/UserHandler";
 import ArticleHandler from "./apiManager/ArticleHandler";
 import EventHandler from "./apiManager/EventHandler";
@@ -15,9 +16,11 @@ import ArticleList from "./articles/Articles";
 import ArticleForm from "./articles/ArticleForm";
 import ArticleEditForm from "./articles/ArticleEditForm";
 import MessageList from "./messages/Messages";
+import Friends from "./friends/Friends"
 import TaskForm from "./tasks/TaskForm";
 import TaskEditForm from "./tasks/TaskEditForm";
 import Welcome from "./welcome/welcome";
+import DashboardList from "./dashboard/Dashboard";
 
 class ApplicationViews extends Component {
   state = {
@@ -25,20 +28,25 @@ class ApplicationViews extends Component {
     articles: [],
     events: [],
     tasks: [],
-    messages: []
+    messages: [],
+    friends: []
   };
 
   componentDidMount() {
     UserHandler.getAll()
       .then(users => this.setState({ users: users }))
+      .then(() => FriendHandler.getAll())
+      .then(friends => {
+        this.setState({ friends: friends });
+      })
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortResource(articles);
+        let sortArticles = this.sortArticle(articles);
         this.setState({ articles: sortArticles });
       })
-      .then(() => EventHandler.getAll())
+      .then(() => EventHandler.get("?_expand=user"))
       .then(events => {
-        let sortEvents = this.sortResource(events);
+        let sortEvents = this.sortEvent(events);
         this.setState({ events: sortEvents });
       })
       .then(() => TaskHandler.getAll())
@@ -55,6 +63,8 @@ class ApplicationViews extends Component {
       });
   };
 
+
+
   // put functions
   updateTask = task =>
     TaskHandler.put(task)
@@ -64,15 +74,19 @@ class ApplicationViews extends Component {
           tasks: tasks
         });
       });
-  sortResource = arr => {
+  sortArticle = arr => {
     return arr.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+  };
+
+  sortEvent = arr => {
+    return arr.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
   };
 
   addArticle = article =>
     ArticleHandler.post(article)
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortResource(articles);
+        let sortArticles = this.sortArticle(articles);
         this.setState({
           articles: sortArticles
         });
@@ -98,40 +112,49 @@ class ApplicationViews extends Component {
 
   addEvent = event => {
     EventHandler.post(event)
-      .then(() => EventHandler.getAll())
-      .then(events => {
-        let sortEvents = this.sortResource(events);
-        this.setState({ events: sortEvents });
-        this.props.history.push("/events");
-      });
-  };
+      .then(() => EventHandler.get("?_expand=user"))
+      .then( events => {
+        let sortEvents = this.sortEvent(events)
+        this.setState({ events: sortEvents })
+        this.props.history.push("/events")
+      })
+  }
 
   deleteEvent = id => {
     EventHandler.delete(id)
-      .then(() => EventHandler.getAll())
-      .then(() => EventHandler.getAll())
-      .then(events => {
-        let sortEvents = this.sortResource(events);
-        this.setState({ events: sortEvents });
-        this.props.history.push("/events");
-      });
-  };
+    .then(() => EventHandler.get("?_expand=user"))
+      .then( events => {
+        let sortEvents = this.sortEvent(events)
+        this.setState({ events: sortEvents })
+        this.props.history.push("/events")
+      })
+  }
+
+  deleteFriend = id => {
+    FriendHandler.delete(id)
+    .then(() => FriendHandler.getAll())
+      .then( friends => {
+        let sortFriends = this.sortFriend(friends);
+        this.setState({ friends: sortFriends });
+        this.props.history.push("/friends")
+      })
+  }
 
   updateEvent = editEvent => {
     EventHandler.put(editEvent)
-      .then(() => EventHandler.getAll())
-      .then(events => {
-        let sortEvents = this.sortResource(events);
-        this.setState({ events: sortEvents });
-        this.props.history.push("/events");
-      });
-  };
+    .then(() => EventHandler.get("?_expand=user"))
+    .then( events => {
+      let sortEvents = this.sortEvent(events)
+      this.setState({ events: sortEvents })
+      this.props.history.push("/events")
+  })
+  }
 
   updateArticle = article => {
     return ArticleHandler.put(article)
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortResource(articles);
+        let sortArticles = this.sortArticle(articles);
         this.setState({
           articles: sortArticles
         });
@@ -142,7 +165,7 @@ class ApplicationViews extends Component {
     ArticleHandler.delete(id)
       .then(() => ArticleHandler.getAll())
       .then(articles => {
-        let sortArticles = this.sortResource(articles);
+        let sortArticles = this.sortArticle(articles);
         this.setState({
           articles: sortArticles
         });
@@ -202,19 +225,50 @@ class ApplicationViews extends Component {
           }}
         />
 
+          <Route
+          exact
+          path="/"
+          render={props => {
+            if (this.isAuthenticated()){
+            return <DashboardList  {...props}
+            state={this.state}
+            articles={this.state.articles}
+            deleteArticle={this.deleteArticle}
+            updateArticle={this.updateArticle}
+            messages={this.state.messages}
+            tasks={this.state.tasks}
+            deleteTask={this.deleteTask}
+            updateTask={this.updateTask}
+            events={this.state.events}
+            deleteEvent={this.deleteEvent}
+            updateEvennt={this.updateEvent}
+            />;
+            }
+            else {
+              return <Redirect to="/welcome" />;
+            }
+          }}
+        />
+
+        <Route exact path="/friends" render={ props => {
+          if (this.isAuthenticated()) {
+            return <Friends {...props} friends={this.state.friends} users={this.state.users} deleteFriend={this.deleteFriend} />
+          } else {
+            return <Redirect to="/welcome" />
+          }
+        }} />
+
         <Route
           exact
           path="/articles"
           render={props => {
-            if (this.isAuthenticated()) {
-              return (
-                <ArticleList
-                  {...props}
-                  articles={this.state.articles}
-                  deleteArticle={this.deleteArticle}
-                />
-              );
-            } else {
+            if (this.isAuthenticated()){
+            return <ArticleList  {...props}
+            articles={this.state.articles}
+            deleteArticle={this.deleteArticle}
+            friends={this.state.friends} />;
+            }
+            else {
               return <Redirect to="/welcome" />;
             }
           }}
@@ -237,14 +291,6 @@ class ApplicationViews extends Component {
                 updateArticle={this.updateArticle}
               />
             );
-          }}
-        />
-
-        <Route
-          path="/friends"
-          render={props => {
-            // Remove null and return the component which will show list of friends
-            return null;
           }}
         />
 
@@ -279,7 +325,8 @@ class ApplicationViews extends Component {
                   sortEvents={this.sortEvents}
                   {...props}
                   deleteEvent={this.deleteEvent}
-                  updateEvennt={this.updateEvent}
+                  updateEvent={this.updateEvent}
+                  friends={this.state.friends}
                 />
               );
             } else {
@@ -295,6 +342,7 @@ class ApplicationViews extends Component {
             if (this.isAuthenticated()) {
             return (
               <TaskEditForm
+
                 {...props}
                 updateTask={this.updateTask}
                 tasks={this.tasks}
