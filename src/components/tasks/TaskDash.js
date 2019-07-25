@@ -37,16 +37,3 @@ export default class TaskDash extends Component {
         )
     }
 }
-
-
-
-{/* <div key={this.props.task.id} className="card"></div>
-{
-this.createTasks(this.props.friends).map(task =>
-<div className="card-body">
-    <h5 className="card-title">{this.props.task.taskName}</h5>
-    <p>Due Date: {this.props.task.completedate}</p>
-
-    </div
-}
-</div>  */}

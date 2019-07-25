@@ -32,10 +32,15 @@ export default class Task extends Component {
                 <section className="tasks">
 
                         {
-                              this.createTasks(this.props.friends).map(task =>
+                              this.createTasks(this.props.tasks).map(task =>
+                                 task.iscompleted === false ?
                                 <div key = {task.id}  >
                                 <TaskCard key={task.id} task={task} {...this.props} updateTask={this.props.updateTask}/>
-                                </div>
+                                </div> : ""
+
+
+
+
                             )
                         }
 
