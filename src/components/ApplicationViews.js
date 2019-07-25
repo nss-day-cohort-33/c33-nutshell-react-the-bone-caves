@@ -339,27 +339,36 @@ class ApplicationViews extends Component {
           exact
           path="/tasks/:id(\d+)/edit"
           render={props => {
+            if (this.isAuthenticated()) {
             return (
               <TaskEditForm
+
                 {...props}
                 updateTask={this.updateTask}
                 tasks={this.tasks}
               />
             );
+          } else {
+            return <Redirect to="/welcome" />;
+          }
           }}
         />
         <Route
           exact
           path="/tasks"
           render={props => {
+            if (this.isAuthenticated()) {
             return (
               <Task
                 {...props}
                 tasks={this.state.tasks}
                 deleteTask={this.deleteTask}
+                updateTask = {this.updateTask}
               />
             );
-            // Remove null and return the component which will show the user's tasks
+          } else {
+            return <Redirect to="/welcome" />;
+          }
           }}
         />
 
@@ -367,7 +376,11 @@ class ApplicationViews extends Component {
           exact
           path="/events/new"
           render={props => {
+            if (this.isAuthenticated()) {
             return <EventForm addEvent={this.addEvent} {...props} />;
+          } else {
+            return <Redirect to="/welcome" />;
+          }
           }}
         />
 

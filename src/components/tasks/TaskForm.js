@@ -3,8 +3,10 @@ import React, { Component } from "react";
 
 export default class TaskForm extends Component{
     state = {
+        userId: "",
         taskName: "",
         completedate: "",
+        iscompleted: false
 
     };
     handleFieldChange = evt => {
@@ -16,11 +18,13 @@ export default class TaskForm extends Component{
       constructNewTask= evt => {
         evt.preventDefault();
           const task = {
+            userId: +sessionStorage.getItem("userId"),
             taskName: this.state.taskName,
-            completedate: this.state.completedate
+            completedate: this.state.completedate,
+            iscompleted: false
           };
 
-          // Create the animal and redirect user to animal list
+
           this.props
             .addTask(task)
             .then(() => this.props.history.push("/tasks"));

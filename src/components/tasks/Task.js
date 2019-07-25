@@ -5,6 +5,18 @@ import "./Task.css"
 
 
 export default class Task extends Component {
+
+    createTasks = () => {
+        let user = +sessionStorage.getItem("userId");
+        let taskArr = []
+        this.props.tasks.forEach( task => {
+            if (task.userId === user) {
+              taskArr.push(task)
+            }
+          })
+        return taskArr
+      }
+
     render() {
         return (
             <div>
@@ -18,9 +30,12 @@ export default class Task extends Component {
                 </div>
 
                 <section className="tasks">
+
                         {
-                            this.props.tasks.map(task =>
-                                <TaskCard key={task.id} task={task} {...this.props} updateTask={this.updateTask}/>
+                              this. createTasks(this.props.friends).map(task =>
+                                <div key = {task.id}  >
+                                <TaskCard key={task.id} task={task} {...this.props} updateTask={this.props.updateTask}/>
+                                </div>
                             )
                         }
 
