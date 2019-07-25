@@ -14,6 +14,7 @@ export default class MessageList extends Component {
       };
 
       createAndAdd = event => {
+
         let theUser = +sessionStorage.getItem("userId")
         let findUser = this.props.users.find(user => user.id === theUser )
         let newMessage = {
@@ -22,7 +23,9 @@ export default class MessageList extends Component {
               message: this.state.message,
               timestamp: Date.now()
           }
+          this.setState({message: ""})
         this.props.addMessage(newMessage)
+
 
 
 
@@ -34,7 +37,7 @@ export default class MessageList extends Component {
           <h4>Messages</h4>
         <fieldset className="form-group">
           <label>Enter Message Here</label>
-          <textarea onChange={this.handleFieldChange} id="message" className="form-control" rows="3" />
+          <textarea onChange={this.handleFieldChange} id="message" value={this.state.message} className="form-control" rows="3" />
           <button onClick={this.createAndAdd}>send</button>
         </fieldset>
         <section className="messages">
