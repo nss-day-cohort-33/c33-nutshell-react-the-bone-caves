@@ -18,10 +18,11 @@ export default class TaskDash extends Component {
             <React.Fragment>
             <div className="card">
             <section className="tasks">
-            <h4>Task List</h4>
+            <h4>Task List:</h4>
                 {
 
-                    this.createTasks(this.props.friends).map(task =>
+                    this.createTasks(this.props.tasks).map(task =>
+                        task.iscompleted === false ?
                         <div key ={task.id} >
                             <div className="card-body">
                                 <div className="card-title">
@@ -30,7 +31,7 @@ export default class TaskDash extends Component {
                                 <p>Due Date: {task.completedate}</p>
                                 </div>
                             </div>
-                        </div>
+                        </div>:""
                         )
                 }
             </section>
