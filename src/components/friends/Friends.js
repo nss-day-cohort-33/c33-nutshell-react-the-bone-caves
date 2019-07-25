@@ -2,6 +2,18 @@ import React, {Component} from 'react';
 import FriendCard from "./FriendCard"
 
 export default class Friends extends Component {
+
+  sortFriend = arr => {
+    let id = +sessionStorage.getItem("userId");
+    let friendArr = arr.filter(friend => {
+      if (friend.userId_1 === id || friend.userId_2 === id) {
+        return friend;
+      }
+    });
+    let newArr = this.showFriends(friendArr)
+    return newArr
+  };
+
   showFriends = arr => {
     let id = +sessionStorage.getItem("userId")
     let friendArr = []
@@ -36,7 +48,7 @@ createEvents = arr => {
         <h1>Friends</h1>
         <section className="friends">
         {
-          this.showFriends(this.props.friends).map( user => <FriendCard key={user.id} user={user} friends={this.props.friends} {...this.props} deleteFriend={this.props.deleteFriend} />)
+          this.sortFriend(this.props.friends).map( user => <FriendCard key={user.id} user={user} friends={this.props.friends} {...this.props} deleteFriend={this.props.deleteFriend} />)
         }
         </section>
       </React.Fragment>

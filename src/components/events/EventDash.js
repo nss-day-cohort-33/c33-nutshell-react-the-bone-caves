@@ -4,6 +4,18 @@ import './EventDash.css'
 import EventCard from './EventCard'
 
 export default class Events extends Component {
+
+  sortFriend = arr => {
+    let id = +sessionStorage.getItem("userId");
+    let friendArr = arr.filter(friend => {
+      if (friend.userId_1 === id || friend.userId_2 === id) {
+        return friend;
+      }
+    });
+    let newArr = this.showFriends(friendArr)
+    return newArr
+  };
+
   showFriends = arr => {
     let id = +sessionStorage.getItem("userId")
     let friendArr = []
@@ -40,7 +52,7 @@ createEvents = arr => {
         <h1>Events</h1>
         <section className="events-dash">
           {
-            this.showFriends(this.props.friends).map( event => <EventCard key={event.id} event={event} deleteEvent={this.props.deleteEvent} updateEvent={this.props.updateEvent} {...this.props} />)
+            this.sortFriend(this.props.friends).map( event => <EventCard key={event.id} event={event} deleteEvent={this.props.deleteEvent} updateEvent={this.props.updateEvent} {...this.props} />)
           }
         </section>
       </React.Fragment>
