@@ -5,7 +5,6 @@ export default class MessageCard extends Component {
   constructor(props) {
     super(props);
 
-    this._handleFocus = this._handleFocus.bind(this);
     this._handleFocusOut = this._handleFocusOut.bind(this);
   }
 
@@ -34,7 +33,7 @@ export default class MessageCard extends Component {
               {this.props.message.message}
             </EditableLabel>
             <a
-              href="#"
+              href="javascript:void(0)x"
               onClick={() => this.props.deleteMessage(this.props.message.id)}
               className="card-link"
             >
