@@ -45,8 +45,8 @@ createEvents = arr => {
    render() {
      return(
       <React.Fragment>
-        <h1>Events</h1>
-        <div className="eventButton">
+        <h1 className="events-centered">Events</h1>
+        <div className="eventButton events-centered">
           <button
             type="button"
             className="btn btn-success"
