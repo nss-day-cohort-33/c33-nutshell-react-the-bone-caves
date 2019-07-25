@@ -8,6 +8,7 @@ import ArticleHandler from "./apiManager/ArticleHandler";
 import EventHandler from "./apiManager/EventHandler";
 import TaskHandler from "./apiManager/TaskHandler";
 import MessageHandler from "./apiManager/MessageHandler";
+import SearchList from "./search/SearchList"
 import Task from "./tasks/Task";
 import Events from "./events/Events";
 import EventForm from "./events/EventForm";
@@ -16,7 +17,7 @@ import ArticleList from "./articles/Articles";
 import ArticleForm from "./articles/ArticleForm";
 import ArticleEditForm from "./articles/ArticleEditForm";
 import MessageList from "./messages/Messages";
-import Friends from "./friends/Friends"
+import Friends from "./friends/Friends";
 import TaskForm from "./tasks/TaskForm";
 import TaskEditForm from "./tasks/TaskEditForm";
 import Welcome from "./welcome/welcome";
@@ -62,8 +63,6 @@ class ApplicationViews extends Component {
         this.setState({ tasks: tasks });
       });
   };
-
-
 
   // put functions
   updateTask = task =>
@@ -113,42 +112,42 @@ class ApplicationViews extends Component {
   addEvent = event => {
     EventHandler.post(event)
       .then(() => EventHandler.get("?_expand=user"))
-      .then( events => {
-        let sortEvents = this.sortEvent(events)
-        this.setState({ events: sortEvents })
-        this.props.history.push("/events")
-      })
-  }
+      .then(events => {
+        let sortEvents = this.sortEvent(events);
+        this.setState({ events: sortEvents });
+        this.props.history.push("/events");
+      });
+  };
 
   deleteEvent = id => {
     EventHandler.delete(id)
-    .then(() => EventHandler.get("?_expand=user"))
-      .then( events => {
-        let sortEvents = this.sortEvent(events)
-        this.setState({ events: sortEvents })
-        this.props.history.push("/events")
-      })
-  }
+      .then(() => EventHandler.get("?_expand=user"))
+      .then(events => {
+        let sortEvents = this.sortEvent(events);
+        this.setState({ events: sortEvents });
+        this.props.history.push("/events");
+      });
+  };
 
   deleteFriend = id => {
     FriendHandler.delete(id)
-    .then(() => FriendHandler.getAll())
-      .then( friends => {
+      .then(() => FriendHandler.getAll())
+      .then(friends => {
         let sortFriends = this.sortFriend(friends);
         this.setState({ friends: sortFriends });
-        this.props.history.push("/friends")
-      })
-  }
+        this.props.history.push("/friends");
+      });
+  };
 
   updateEvent = editEvent => {
     EventHandler.put(editEvent)
-    .then(() => EventHandler.get("?_expand=user"))
-    .then( events => {
-      let sortEvents = this.sortEvent(events)
-      this.setState({ events: sortEvents })
-      this.props.history.push("/events")
-  })
-  }
+      .then(() => EventHandler.get("?_expand=user"))
+      .then(events => {
+        let sortEvents = this.sortEvent(events);
+        this.setState({ events: sortEvents });
+        this.props.history.push("/events");
+      });
+  };
 
   updateArticle = article => {
     return ArticleHandler.put(article)
@@ -225,50 +224,78 @@ class ApplicationViews extends Component {
           }}
         />
 
-          <Route
+        <Route
           exact
           path="/"
           render={props => {
-            if (this.isAuthenticated()){
-            return <DashboardList  {...props}
-            state={this.state}
-            articles={this.state.articles}
-            deleteArticle={this.deleteArticle}
-            updateArticle={this.updateArticle}
-            messages={this.state.messages}
-            tasks={this.state.tasks}
-            deleteTask={this.deleteTask}
-            updateTask={this.updateTask}
-            events={this.state.events}
-            deleteEvent={this.deleteEvent}
-            updateEvennt={this.updateEvent}
-            />;
-            }
-            else {
+            if (this.isAuthenticated()) {
+              return (
+                <DashboardList
+                  {...props}
+                  state={this.state}
+                  articles={this.state.articles}
+                  deleteArticle={this.deleteArticle}
+                  updateArticle={this.updateArticle}
+                  messages={this.state.messages}
+                  tasks={this.state.tasks}
+                  deleteTask={this.deleteTask}
+                  updateTask={this.updateTask}
+                  events={this.state.events}
+                  deleteEvent={this.deleteEvent}
+                  updateEvennt={this.updateEvent}
+                />
+              );
+            } else {
               return <Redirect to="/welcome" />;
             }
           }}
         />
 
-        <Route exact path="/friends" render={ props => {
-          if (this.isAuthenticated()) {
-            return <Friends {...props} friends={this.state.friends} users={this.state.users} deleteFriend={this.deleteFriend} />
-          } else {
-            return <Redirect to="/welcome" />
-          }
-        }} />
+        <Route
+          exact
+          path="/search"
+          render={props => {
+            if (this.isAuthenticated()) {
+              return <SearchList results={this.props.results} />;
+            } else {
+              return <Redirect to="/welcome" />;
+            }
+          }}
+        />
+
+        <Route
+          exact
+          path="/friends"
+          render={props => {
+            if (this.isAuthenticated()) {
+              return (
+                <Friends
+                  {...props}
+                  friends={this.state.friends}
+                  users={this.state.users}
+                  deleteFriend={this.deleteFriend}
+                />
+              );
+            } else {
+              return <Redirect to="/welcome" />;
+            }
+          }}
+        />
 
         <Route
           exact
           path="/articles"
           render={props => {
-            if (this.isAuthenticated()){
-            return <ArticleList  {...props}
-            articles={this.state.articles}
-            deleteArticle={this.deleteArticle}
-            friends={this.state.friends} />;
-            }
-            else {
+            if (this.isAuthenticated()) {
+              return (
+                <ArticleList
+                  {...props}
+                  articles={this.state.articles}
+                  deleteArticle={this.deleteArticle}
+                  friends={this.state.friends}
+                />
+              );
+            } else {
               return <Redirect to="/welcome" />;
             }
           }}
@@ -340,17 +367,16 @@ class ApplicationViews extends Component {
           path="/tasks/:id(\d+)/edit"
           render={props => {
             if (this.isAuthenticated()) {
-            return (
-              <TaskEditForm
-
-                {...props}
-                updateTask={this.updateTask}
-                tasks={this.tasks}
-              />
-            );
-          } else {
-            return <Redirect to="/welcome" />;
-          }
+              return (
+                <TaskEditForm
+                  {...props}
+                  updateTask={this.updateTask}
+                  tasks={this.tasks}
+                />
+              );
+            } else {
+              return <Redirect to="/welcome" />;
+            }
           }}
         />
         <Route
@@ -358,17 +384,17 @@ class ApplicationViews extends Component {
           path="/tasks"
           render={props => {
             if (this.isAuthenticated()) {
-            return (
-              <Task
-                {...props}
-                tasks={this.state.tasks}
-                deleteTask={this.deleteTask}
-                updateTask = {this.updateTask}
-              />
-            );
-          } else {
-            return <Redirect to="/welcome" />;
-          }
+              return (
+                <Task
+                  {...props}
+                  tasks={this.state.tasks}
+                  deleteTask={this.deleteTask}
+                  updateTask={this.updateTask}
+                />
+              );
+            } else {
+              return <Redirect to="/welcome" />;
+            }
           }}
         />
 
@@ -377,10 +403,10 @@ class ApplicationViews extends Component {
           path="/events/new"
           render={props => {
             if (this.isAuthenticated()) {
-            return <EventForm addEvent={this.addEvent} {...props} />;
-          } else {
-            return <Redirect to="/welcome" />;
-          }
+              return <EventForm addEvent={this.addEvent} {...props} />;
+            } else {
+              return <Redirect to="/welcome" />;
+            }
           }}
         />
 
