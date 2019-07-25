@@ -3,8 +3,10 @@ import TaskHandler from "../apiManager/TaskHandler"
 
 export default class TaskEditForm extends Component{
     state = {
-        taskName: "",
-        completedate: ""
+      userId: "",
+      taskName: "",
+      completedate: "",
+      iscompleted: false
     };
     handleFieldChange = evt => {
         const stateToChange = {};
@@ -16,8 +18,10 @@ export default class TaskEditForm extends Component{
         evt.preventDefault()
           const taskEdit = {
             id: this.props.match.params.id,
+            userId: +sessionStorage.getItem("userId"),
             taskName: this.state.taskName,
-            completedate: this.state.completedate
+            completedate: this.state.completedate,
+            iscompleted: false
           }
 
 
