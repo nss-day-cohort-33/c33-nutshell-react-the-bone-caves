@@ -34,6 +34,7 @@ export default class Login extends Component {
     if (findUser) {
       sessionStorage.setItem("userId",findUser.id)
       this.props.history.push("/")
+      document.location.reload(true)
     } else {
       alert("username or password was incorect. please enter the right password or username");
     }
