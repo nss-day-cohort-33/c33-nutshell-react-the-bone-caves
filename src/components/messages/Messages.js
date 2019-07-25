@@ -31,6 +31,7 @@ export default class MessageList extends Component {
   render() {
     return (
       <React.Fragment>
+          <h4>Messages</h4>
         <fieldset className="form-group">
           <label>Enter Message Here</label>
           <textarea onChange={this.handleFieldChange} id="message" className="form-control" rows="3" />
