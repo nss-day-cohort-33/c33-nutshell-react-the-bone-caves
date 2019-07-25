@@ -286,7 +286,7 @@ class ApplicationViews extends Component {
           path="/search"
           render={props => {
             if (this.isAuthenticated()) {
-              return <SearchList results={this.props.results} />;
+              return <SearchList friends={this.state.friends} results={this.props.results} />;
             } else {
               return <Redirect to="/welcome" />;
             }
