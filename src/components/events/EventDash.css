@@ -1,3 +1,6 @@
+section.events-dash > div.event-card {
+  padding: 10px;
+}
 section.events-dash > div.user-event.event-card > .btn {
   display: none;
 }

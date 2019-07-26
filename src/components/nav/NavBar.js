@@ -1,9 +1,17 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 import "bootstrap/dist/css/bootstrap.min.css"
 
 
 class NavBar extends Component {
+  state = {
+    saveDisabled: false
+  }
+
+  logOut = () => {
+    sessionStorage.clear()
+    this.props.history.push("/welcome/login")
+  }
 
     render() {
         return (
@@ -30,6 +38,17 @@ class NavBar extends Component {
                     <li className="nav-item">
                       <input type="text" placeholder="Search" id="searchBar" className="search form-control" onKeyPress={this.props.inputEvent} ></input>
                     </li>
+                    <li className="nav-item">
+                      <button className="logout-btn btn"
+                      onClick={() => {
+                        this.setState({saveDisabled: true})
+                        this.logOut()
+                      }}
+                      style={{display: sessionStorage.getItem("userId") ? "" : "none"}}
+                      >
+                        Log-Out
+                      </button>
+                    </li>
 
                 </ul>
             </nav>
@@ -37,4 +56,4 @@ class NavBar extends Component {
     }
 }
 
-export default NavBar
+export default withRouter(NavBar)

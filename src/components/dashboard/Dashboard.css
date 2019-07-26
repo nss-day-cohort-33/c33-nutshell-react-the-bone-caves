@@ -1,15 +1,34 @@
+
+.parent-Dash-Div {
+  display: flex;
+  flex-flow: column wrap;
+  width: 100%
+}
+
 .dashboard-row {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
 }
 
-
+.dashboard-div-box {
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+  flex: 1;
+  margin: 10px;
+}
 .dashboard-div {
   display: flex;
   flex-direction: column;
-  flex-basis: 100%;
-  flex: 1;
-  margin-right: 10px;
+  height: 100%;
+  padding: 10px;
+  overflow-y: scroll;
+  border: black solid 1px;
+  background-color: #D9DEDE;
 }
+div.dashboard-div-box > h3 {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+

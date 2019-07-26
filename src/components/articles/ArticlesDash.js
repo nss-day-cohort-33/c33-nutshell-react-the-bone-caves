@@ -45,7 +45,6 @@ export default class ArticleDash extends Component {
     render () {
         return (
             <React.Fragment>
-            <h4>Articles:</h4>
             <section className="articles">
                 {
                     this.sortFriend(this.props.friends).map(article =>
