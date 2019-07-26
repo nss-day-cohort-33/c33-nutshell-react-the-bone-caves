@@ -16,7 +16,6 @@ export default class TaskDash extends Component {
     render() {
         return (
             <React.Fragment>
-            <h4>Task List:</h4>
             <div className="card">
             <section className="tasks">
                 {
