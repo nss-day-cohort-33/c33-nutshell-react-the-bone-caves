@@ -6,11 +6,7 @@ export default class Events extends Component {
 
   sortFriend = arr => {
     let id = +sessionStorage.getItem("userId");
-    let friendArr = arr.filter(friend => {
-      if (friend.userId_1 === id || friend.userId_2 === id) {
-        return friend;
-      }
-    });
+    let friendArr = arr.filter(friend => friend.userId_1 === id || friend.userId_2 === id ? friend : '');
     let newArr = this.showFriends(friendArr)
     return newArr
   };
@@ -49,8 +45,8 @@ createEvents = arr => {
    render() {
      return(
       <React.Fragment>
-        <h1>Events</h1>
-        <div className="eventButton">
+        <h1 className="events-centered">Events</h1>
+        <div className="eventButton events-centered">
           <button
             type="button"
             className="btn btn-success"

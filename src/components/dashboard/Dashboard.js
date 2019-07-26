@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Events from "../events/Events";
 import MessageList from "../messages/Messages";
 import TaskDash from "../tasks/TaskDash";
 import ArticleDash from "../articles/ArticlesDash";
@@ -11,9 +10,12 @@ class DashboardList extends Component {
       <React.Fragment>
         <ArticleDash {...this.props}
         friends={this.props.state.friends}/>
+        <br></br>
         <EventDash {...this.props}
         friends={this.props.state.friends}/>
+        <br></br>
         <MessageList {...this.props}/>
+        <br></br>
         <TaskDash {...this.props}/>
       </React.Fragment>
     );

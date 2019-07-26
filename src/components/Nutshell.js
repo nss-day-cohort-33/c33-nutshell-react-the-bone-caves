@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import NavBar from "./nav/NavBar";
 import ApplicationViews from "./ApplicationViews";
-import UserHandler from "./apiManager/UserHandler";
 import "./Nutshell.css";
 
 class Nutshell extends Component {

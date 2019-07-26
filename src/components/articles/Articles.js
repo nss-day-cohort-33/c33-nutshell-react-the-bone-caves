@@ -8,11 +8,7 @@ export default class ArticleList extends Component {
 
     sortFriend = arr => {
       let id = +sessionStorage.getItem("userId");
-      let friendArr = arr.filter(friend => {
-        if (friend.userId_1 === id || friend.userId_2 === id) {
-          return friend;
-        }
-      });
+      let friendArr = arr.filter(friend => friend.userId_1 === id || friend.userId_2 === id ? friend : '');
       let newArr = this.showFriends(friendArr)
       return newArr
     };
@@ -49,6 +45,7 @@ export default class ArticleList extends Component {
     render () {
         return (
         <React.Fragment>
+            <h1 className="articleTitle">Articles</h1>
             <div className="articleButton">
                 <button type="button"
                     className="btn btn-success"
