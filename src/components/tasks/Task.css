@@ -1,0 +1,21 @@
+.tasks {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap:wrap;
+
+  }
+  .title {
+    text-align: center;
+  }
+  .AddTaskButton {
+    text-align: center;
+    margin: 10px;
+  }
+  .card-body{
+    border: 5px solid red;
+  }
+  .delete-btn {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
