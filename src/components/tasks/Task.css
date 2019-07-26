@@ -4,6 +4,12 @@
     flex-wrap:wrap;
 
   }
+  div.dashboard-div > div.card > section.tasks {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly
+  }
+
   .title {
     text-align: center;
   }
