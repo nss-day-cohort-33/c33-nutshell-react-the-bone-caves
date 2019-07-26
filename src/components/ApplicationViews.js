@@ -210,7 +210,28 @@ class ApplicationViews extends Component {
           path="/"
           render={props => {
             if (this.isAuthenticated()) {
-              return null;
+              return (
+                <DashboardList
+                  {...props}
+                  users={this.state.users}
+                  addMessage={this.addMessage}
+                  deleteMessage={this.deleteMessage}
+                  friends={this.state.friends}
+                  addFriend={this.addFriend}
+                  editMessage={this.editMessage}
+                  state={this.state}
+                  articles={this.state.articles}
+                  deleteArticle={this.deleteArticle}
+                  updateArticle={this.updateArticle}
+                  messages={this.state.messages}
+                  tasks={this.state.tasks}
+                  deleteTask={this.deleteTask}
+                  updateTask={this.updateTask}
+                  events={this.state.events}
+                  deleteEvent={this.deleteEvent}
+                  updateEvennt={this.updateEvent}
+                />
+              );
             } else {
               return <Redirect to="/welcome" />;
             }
@@ -250,39 +271,6 @@ class ApplicationViews extends Component {
                 {...props}
               />
             );
-          }}
-        />
-
-        <Route
-          exact
-          path="/"
-          render={props => {
-            if (this.isAuthenticated()) {
-              return (
-                <DashboardList
-                  {...props}
-                  users={this.state.users}
-                  addMessage={this.addMessage}
-                  deleteMessage={this.deleteMessage}
-                  friends={this.state.friends}
-                  addFriend={this.addFriend}
-                  editMessage={this.editMessage}
-                  state={this.state}
-                  articles={this.state.articles}
-                  deleteArticle={this.deleteArticle}
-                  updateArticle={this.updateArticle}
-                  messages={this.state.messages}
-                  tasks={this.state.tasks}
-                  deleteTask={this.deleteTask}
-                  updateTask={this.updateTask}
-                  events={this.state.events}
-                  deleteEvent={this.deleteEvent}
-                  updateEvennt={this.updateEvent}
-                />
-              );
-            } else {
-              return <Redirect to="/welcome" />;
-            }
           }}
         />
 
@@ -382,13 +370,6 @@ class ApplicationViews extends Component {
 
         <Route
           exact
-          path="/tasks/new"
-          render={props => {
-            return <TaskForm {...props} addTask={this.addTask} />;
-          }}
-        />
-        <Route
-          exact
           path="/events"
           render={props => {
             if (this.isAuthenticated()) {
@@ -406,41 +387,6 @@ class ApplicationViews extends Component {
               return <Redirect to="/welcome" />;
             }
             // Remove null and return the component which will show the user's tasks
-          }}
-        />
-        <Route
-          exact
-          path="/tasks/:id(\d+)/edit"
-          render={props => {
-            if (this.isAuthenticated()) {
-              return (
-                <TaskEditForm
-                  {...props}
-                  updateTask={this.updateTask}
-                  tasks={this.tasks}
-                />
-              );
-            } else {
-              return <Redirect to="/welcome" />;
-            }
-          }}
-        />
-        <Route
-          exact
-          path="/tasks"
-          render={props => {
-            if (this.isAuthenticated()) {
-              return (
-                <Task
-                  {...props}
-                  tasks={this.state.tasks}
-                  deleteTask={this.deleteTask}
-                  updateTask={this.updateTask}
-                />
-              );
-            } else {
-              return <Redirect to="/welcome" />;
-            }
           }}
         />
 
@@ -469,6 +415,52 @@ class ApplicationViews extends Component {
             );
           }}
         />
+
+        <Route
+          exact
+          path="/tasks/:id(\d+)/edit"
+          render={props => {
+            if (this.isAuthenticated()) {
+              return (
+                <TaskEditForm
+                  {...props}
+                  updateTask={this.updateTask}
+                  tasks={this.tasks}
+                />
+              );
+            } else {
+              return <Redirect to="/welcome" />;
+            }
+          }}
+        />
+
+        <Route
+          exact
+          path="/tasks/new"
+          render={props => {
+            return <TaskForm {...props} addTask={this.addTask} />;
+          }}
+        />
+
+        <Route
+          exact
+          path="/tasks"
+          render={props => {
+            if (this.isAuthenticated()) {
+              return (
+                <Task
+                  {...props}
+                  tasks={this.state.tasks}
+                  deleteTask={this.deleteTask}
+                  updateTask={this.updateTask}
+                />
+              );
+            } else {
+              return <Redirect to="/welcome" />;
+            }
+          }}
+        />
+
       </React.Fragment>
     );
   }
